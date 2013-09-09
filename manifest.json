@@ -3,12 +3,19 @@
     "manifest_version": 2,
     "version": "0.0.1",
     "description": "キーボードでタブ移動する",
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["underscore.js", "leapTab.js"]
+        }
+    ],
     "background": {
         "scripts": [
-            "background.js"
+            "background.js",
+            "underscore.js"
         ]
     },
     "permissions": [
-        "tab"
+        "tabs"
     ]
 }
