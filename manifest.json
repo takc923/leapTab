@@ -1,0 +1,14 @@
+{
+    "name": "Leap Tab",
+    "manifest_version": 2,
+    "version": "0.0.1",
+    "description": "キーボードでタブ移動する",
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "permissions": [
+        "tab"
+    ]
+}
