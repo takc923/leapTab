@@ -1,22 +1,23 @@
+var alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var alphabetsHash = alphabets.split("");
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         switch (request.action) {
         case "prepareMove" : prepareMove(); break;
         case "reset"       : reset();       break;
-        case "move"        : move();        break;
+        case "move"        : move(request.code);        break;
         }
     }
 );
 
 function prepareMove() {
     chrome.windows.getCurrent({populate: true}, function(win) {
-        var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
-        for (var i = 0; i < alphabet.length && i < win.tabs.length; i++) {
+        for (var i = 0; i < alphabetsHash.length && i < win.tabs.length; i++) {
             chrome.tabs.sendMessage(win.tabs[i].id, {
                 action    : "change",
                 args : {
                     faviconUrl: "http://developer.chrome.com/favicon.ico",
-                    title     : "[" + alphabet[i] + "] " + win.tabs[i].title
+                    title     : "[" + alphabetsHash[i] + "] " + win.tabs[i].title
                 }
             });
         }
@@ -33,5 +34,8 @@ function reset() {
     });
 }
 
-function move() {
+function move(code) {
+    chrome.windows.getCurrent({populate: true},function(win){
+        chrome.tabs.update(win.tabs[alphabets.indexOf(String.fromCharCode(code))].id, {active: true});
+    });
 }
