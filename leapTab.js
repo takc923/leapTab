@@ -10,14 +10,14 @@ window.addEventListener("load", function(){
             chrome.runtime.sendMessage({
                 action : "prepareMove"
             });
-        }
-        if(beforeMoveFlag && isAlphabetCharCode(evt.keyCode)){
+        }else if(beforeMoveFlag && isAlphabetCharCode(evt.keyCode)){
             beforeMoveFlag = false;
             chrome.runtime.sendMessage({
                 action : "move",
                 code   : evt.keyCode
             });
         } else {
+            console.log("before reset");
             beforeMoveFlag = false;
             chrome.runtime.sendMessage({
                 action : "reset"
@@ -28,7 +28,7 @@ window.addEventListener("load", function(){
         switch (request.action) {
             case "change" : change(request.args); break;
             case "reset"       : reset();       break;
-            case "move"        : move();        break;
+            case "move"        : move(request.args);        break;
         }
     });
 });
@@ -44,7 +44,7 @@ function getFavIconUrl() {
 }
 
 function isAlphabetCharCode(code) {
-    return code >= 65 && code <= 90 && code >= 97 && code <= 122;
+    return (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
 }
 
 function change(args) {
