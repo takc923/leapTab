@@ -36,6 +36,6 @@ function reset() {
 
 function move(code) {
     chrome.windows.getCurrent({populate: true},function(win){
-        chrome.tabs.update(win.tabs[alphabets.indexOf(String.fromCharCode(code))].id, {active: true});
+        chrome.tabs.update(win.tabs[alphabets.indexOf(String.fromCharCode(code))].id, {selected: true});
     });
 }
