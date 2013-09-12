@@ -9,3 +9,4 @@
 * manifest.jsonのupdate
 * underscore.js無駄に使ったのやめる
 * faviconでキー表示機能
+* originalTitleのところ、最初に取得したtitleから変わってる可能性あるからなんとかする
