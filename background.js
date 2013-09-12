@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener(
         switch (request.action) {
         case "prepareMove" : prepareMove(); break;
         case "reset"       : reset();       break;
-        case "move"        : move(request.code);        break;
+        case "move"        : move(request.code);reset();        break;
         }
     }
 );
@@ -36,6 +36,7 @@ function reset() {
 
 function move(code) {
     chrome.windows.getCurrent({populate: true},function(win){
+        if (alphabets.indexOf(String.fromCharCode(code)) >= win.tabs.length) reset();
         chrome.tabs.update(win.tabs[alphabets.indexOf(String.fromCharCode(code))].id, {selected: true});
     });
 }

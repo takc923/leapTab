@@ -4,8 +4,17 @@ var beforeMoveFlag = false;
 window.addEventListener("load", function(){
     originalTitle = document.title;
     originalFaviconUrl = getFavIconUrl();
+    document.addEventListener("keyup", function(evt){
+        if(beforeMoveFlag && evt.keyCode == 27) {
+            beforeMoveFlag = false;
+            chrome.runtime.sendMessage({
+                action : "reset"
+            });
+        }
+    });
     document.addEventListener("keypress", function(evt){
-        if(! beforeMoveFlag && evt.keyCode == 116){
+        if (document.activeElement.tagName != "BODY")  return;
+        if(! beforeMoveFlag && evt.keyCode == 116) {
             beforeMoveFlag = true;
             chrome.runtime.sendMessage({
                 action : "prepareMove"
@@ -48,12 +57,10 @@ function isAlphabetCharCode(code) {
 }
 
 function change(args) {
-    console.log(args);
     document.title = args.title;
 }
 
 function reset() {
-    console.log("まさか...?");
     favicon.change(originalFaviconUrl, originalTitle);
 }
 
