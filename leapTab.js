@@ -63,6 +63,3 @@ function change(args) {
 function reset() {
     favicon.change(originalFaviconUrl, originalTitle);
 }
-
-function move() {
-}
