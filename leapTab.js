@@ -29,6 +29,7 @@ window.addEventListener("load", function(){
                 action : "move",
                 code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
             });
+            evt.stopPropagation();
         } else if (beforeMoveFlag && evt.keyCode == 27){
             beforeMoveFlag = false;
             chrome.runtime.sendMessage({
