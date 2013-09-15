@@ -7,14 +7,12 @@
         {
             "matches": ["<all_urls>"],
             "js": [
-                "underscore.js",
                 "favicon.min.js",
                 "leapTab.js"]
         }
     ],
     "background": {
         "scripts": [
-            "underscore.js",
             "background.js"
         ]
     },
