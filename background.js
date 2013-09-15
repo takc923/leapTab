@@ -10,12 +10,16 @@ for (var i = 0; i < alphabets.length; i++) {
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         switch (request.action) {
-        case "prepareMove" : prepareMove(); break;
-        case "reset"       : reset();       break;
-        case "move"        : move(request.code);reset();        break;
+        case "prepareMove" : prepareMove();      break;
+        case "reset"       : reset();            break;
+        case "move"        : move(request.code); break;
         }
     }
 );
+
+chrome.tabs.onActivated.addListener(function() {
+    reset();
+});
 
 function prepareMove() {
     // TODO: 今いるタブはスキップしたい
@@ -24,7 +28,6 @@ function prepareMove() {
             chrome.tabs.sendMessage(win.tabs[i].id, {
                 action    : "change",
                 args : {
-                    faviconUrl: "http://developer.chrome.com/favicon.ico",
                     title     : bindedKeys[i] + "| " + win.tabs[i].title
                 }
             });
