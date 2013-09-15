@@ -18,6 +18,7 @@ chrome.runtime.onMessage.addListener(
 );
 
 chrome.tabs.onActivated.addListener(function() {
+    // beforeMoveじゃない時どうする的な
     reset();
 });
 
