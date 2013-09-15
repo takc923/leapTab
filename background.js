@@ -1,5 +1,5 @@
 var vimiumBinds = "bdfghijklmnoprtuxyzBFGHJKLNOPTX";
-var alphabets = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var bindedKeys = "";
 for (var i = 0; i < alphabets.length; i++) {
     if (vimiumBinds.indexOf(alphabets[i]) == -1) {

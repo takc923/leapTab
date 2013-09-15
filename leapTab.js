@@ -5,8 +5,8 @@ var vimiumBinds = "bdfghijklnmoprtuxyzBFGHJKLNOPTX";
 var originalFaviconUrl;
 var originalTitle;
 var beforeMoveFlag = false;
-// TODO: 名前更新（英数字的なものに）
-var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+// TODO: alphanumericとalphabetsらへんの整理
+var alphanumeric = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var bindedKeys = "";
 for (var i = 0; i < alphanumeric.length; i++) {
