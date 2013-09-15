@@ -2,7 +2,6 @@
 // 1. globalな変数に入れる。window.settings的な
 // 2. localstrageに入れる
 var vimiumBinds = "bdfghijklnmoprtuxyzBFGHJKLNOPTX";
-var originalFaviconUrl;
 var originalTitle;
 var beforeMoveFlag = false;
 // TODO: alphanumericとalphabetsらへんの整理
@@ -17,7 +16,6 @@ for (var i = 0; i < alphanumeric.length; i++) {
 
 window.addEventListener("load", function(){
     originalTitle = document.title;
-    originalFaviconUrl = getFavIconUrl();
     document.addEventListener("keydown", function(evt){
         if (document.activeElement.tagName != "BODY")  return;
         if(! beforeMoveFlag && evt.keyCode == 65 && ! evt.shiftKey) {
@@ -48,16 +46,6 @@ window.addEventListener("load", function(){
     });
 });
 
-function getFavIconUrl() {
-    var linkDoms = document.head.getElementsByTagName("link");
-    for(var i = 0; i < linkDoms.length; i++) {
-        if (linkDoms[i].rel.indexOf("icon") != -1) {
-            return linkDoms[i].href;
-        }
-    }
-    return location.origin + "/favicon.ico";
-}
-
 // TODO: 名前微妙 isEnableKeyとか有効なキーかどうか的な名前のほうが良さそう
 function isBinded(code) {
     return bindedKeys.indexOf(String.fromCharCode(code)) != -1;
@@ -68,7 +56,7 @@ function change(args) {
 }
 
 function reset() {
-    favicon.change(originalFaviconUrl, originalTitle);
+    document.title = originalTitle;
 }
 
 function isAlphabet(code) {
