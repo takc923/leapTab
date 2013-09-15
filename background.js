@@ -1,5 +1,12 @@
-var alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var alphabetsHash = alphabets.split("");
+var vimiumBinds = "bdfghijklmnoprtuxyzBFGHJKLNOPTX";
+var alphabets = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var bindedKeys = "";
+for (var i = 0; i < alphabets.length; i++) {
+    if (vimiumBinds.indexOf(alphabets[i]) == -1) {
+        bindedKeys += alphabets[i];
+    }
+}
+
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         switch (request.action) {
@@ -11,13 +18,14 @@ chrome.runtime.onMessage.addListener(
 );
 
 function prepareMove() {
+    // TODO: 今いるタブはスキップしたい
     chrome.windows.getCurrent({populate: true}, function(win) {
-        for (var i = 0; i < alphabetsHash.length && i < win.tabs.length; i++) {
+        for (var i = 0; i < bindedKeys.length && i < win.tabs.length; i++) {
             chrome.tabs.sendMessage(win.tabs[i].id, {
                 action    : "change",
                 args : {
                     faviconUrl: "http://developer.chrome.com/favicon.ico",
-                    title     : "[" + alphabetsHash[i] + "] " + win.tabs[i].title
+                    title     : bindedKeys[i] + "| " + win.tabs[i].title
                 }
             });
         }
@@ -35,8 +43,8 @@ function reset() {
 }
 
 function move(code) {
-    chrome.windows.getCurrent({populate: true},function(win){
-        if (alphabets.indexOf(String.fromCharCode(code)) >= win.tabs.length) reset();
-        chrome.tabs.update(win.tabs[alphabets.indexOf(String.fromCharCode(code))].id, {selected: true});
+    chrome.windows.getCurrent({populate: true}, function(win){
+        if (bindedKeys.indexOf(String.fromCharCode(code)) >= win.tabs.length) reset();
+        chrome.tabs.update(win.tabs[bindedKeys.indexOf(String.fromCharCode(code))].id, {selected: true});
     });
 }
