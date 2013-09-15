@@ -57,7 +57,7 @@ function change(args) {
 }
 
 function reset() {
-    document.title = originalTitle;
+    document.title = document.title.replace(/^.\| (.*)/, "$1");
 }
 
 function isAlphabet(code) {
