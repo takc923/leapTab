@@ -6,13 +6,16 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["underscore.js", "favicon.min.js", "leapTab.js"]
+            "js": [
+                "underscore.js",
+                "favicon.min.js",
+                "leapTab.js"]
         }
     ],
     "background": {
         "scripts": [
-            "background.js",
-            "underscore.js"
+            "underscore.js",
+            "background.js"
         ]
     },
     "permissions": [
