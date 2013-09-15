@@ -48,6 +48,6 @@ function reset() {
 function move(code) {
     chrome.windows.getCurrent({populate: true}, function(win){
         if (bindedKeys.indexOf(String.fromCharCode(code)) >= win.tabs.length) reset();
-        chrome.tabs.update(win.tabs[bindedKeys.indexOf(String.fromCharCode(code))].id, {selected: true});
+        chrome.tabs.update(win.tabs[bindedKeys.indexOf(String.fromCharCode(code))].id, {active: true});
     });
 }
