@@ -7,7 +7,6 @@ var originalFavIconUrl;
 var beforeMoveFlag = false;
 // TODO: alphanumericとalphabetsらへんの整理
 var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var bindedKeys = "";
 for (var i = 0; i < alphanumeric.length; i++) {
     if (vimiumBinds.indexOf(alphanumeric[i]) == -1) {
@@ -64,7 +63,7 @@ function reset() {
 
 // 正規表現で出来るやろ...
 function isAlphabet(code) {
-    return alphabets.indexOf(String.fromCharCode(code)) != -1 ;
+    return String.fromCharCode(code).search(/^[a-zA-Z]$/) == 0;
 }
 
 function getFavIconUrl() {
@@ -86,5 +85,5 @@ function getAlphanumericImageUrl(character) {
     } else if (character.search(/^[A-Z]$/) == 0) {
         prefix = "c_";
     }
-    return chrome.extension.getURL(prefix + character + ".ico");
+    return chrome.extension.getURL("favicon/" + prefix + character + ".ico");
 }
