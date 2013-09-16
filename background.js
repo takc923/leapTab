@@ -1,5 +1,6 @@
-var vimiumBinds = "bdfghijklmnoprtuxyzBFGHJKLNOPTX";
-var alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var vimiumBinds = "bdfghijklmnoprtuxyzBFGHJKLNOPTX0123456789";
+// alphanumeric
+var alphabets = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var bindedKeys = "";
 for (var i = 0; i < alphabets.length; i++) {
     if (vimiumBinds.indexOf(alphabets[i]) == -1) {
@@ -28,8 +29,10 @@ function prepareMove() {
         for (var i = 0; i < bindedKeys.length && i < win.tabs.length; i++) {
             chrome.tabs.sendMessage(win.tabs[i].id, {
                 action    : "change",
+                // characterだけ分かれば向こう側でtitle変えれる
                 args : {
-                    title     : bindedKeys[i] + "| " + win.tabs[i].title
+                    title     : bindedKeys[i] + "| " + win.tabs[i].title,
+                    character : bindedKeys[i]
                 }
             });
         }

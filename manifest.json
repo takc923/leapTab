@@ -6,11 +6,14 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["leapTab.js"]
+            "js": ["data_uri.js", "favicon.min.js", "leapTab.js"]
         }
     ],
     "background": {
         "scripts": ["background.js"]
     },
-    "permissions": ["tabs"]
+    "permissions": ["tabs"],
+    "web_accessible_resources": [
+        "favicon/*.ico"
+    ]
 }
