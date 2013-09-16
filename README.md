@@ -21,6 +21,7 @@
 * manifest.jsonの書式合わせたい
 * coding standard的な
 * faviconが小文字と大文字分かりづらい
+* 元々faviconがないページだとresetした時faviconが戻らない
 
 
 # Others
