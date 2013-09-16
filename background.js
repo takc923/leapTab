@@ -29,9 +29,7 @@ function prepareMove() {
         for (var i = 0; i < bindedKeys.length && i < win.tabs.length; i++) {
             chrome.tabs.sendMessage(win.tabs[i].id, {
                 action    : "change",
-                // characterだけ分かれば向こう側でtitle変えれる
                 args : {
-                    title     : bindedKeys[i] + "| " + win.tabs[i].title,
                     character : bindedKeys[i]
                 }
             });
