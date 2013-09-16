@@ -4,7 +4,7 @@
 // 3. option pageで指定
 var vimiumBinds = "bdfghijklnmoprtuxyzBFGHJKLNOPTX0123456789";
 var originalFavIconUrl;
-var beforeMoveFlag = false;
+var beforeLeapFlag = false;
 var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var bindedKeys = "";
 for (var i = 0; i < alphanumeric.length; i++) {
@@ -18,20 +18,20 @@ window.addEventListener("load", function(){
     originalFavIconUrl = getFavIconUrl();
     document.addEventListener("keydown", function(evt){
         if (document.activeElement.tagName != "BODY")  return;
-        if(! beforeMoveFlag && evt.keyCode == 65 && ! evt.shiftKey) {
-            beforeMoveFlag = true;
+        if(! beforeLeapFlag && evt.keyCode == 65 && ! evt.shiftKey) {
+            beforeLeapFlag = true;
             chrome.runtime.sendMessage({
-                action : "prepareMove"
+                action : "prepareLeap"
             });
-        }else if(beforeMoveFlag && isBinded(evt.keyCode)){
-            beforeMoveFlag = false;
+        }else if(beforeLeapFlag && isBinded(evt.keyCode)){
+            beforeLeapFlag = false;
             chrome.runtime.sendMessage({
-                action : "move",
+                action : "leap",
                 code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
             });
             evt.stopPropagation();
-        } else if (beforeMoveFlag && evt.keyCode == 27){
-            beforeMoveFlag = false;
+        } else if (beforeLeapFlag && evt.keyCode == 27){
+            beforeLeapFlag = false;
             chrome.runtime.sendMessage({
                 action : "reset"
             });
@@ -42,7 +42,6 @@ window.addEventListener("load", function(){
         switch (request.action) {
             case "change" : change(request.args); break;
             case "reset"       : reset();       break;
-            case "move"        : move(request.args);        break;
         }
     });
 });
