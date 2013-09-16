@@ -1,10 +1,9 @@
 var vimiumBinds = "bdfghijklmnoprtuxyzBFGHJKLNOPTX0123456789";
-// alphanumeric
-var alphabets = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var bindedKeys = "";
-for (var i = 0; i < alphabets.length; i++) {
-    if (vimiumBinds.indexOf(alphabets[i]) == -1) {
-        bindedKeys += alphabets[i];
+for (var i = 0; i < alphanumeric.length; i++) {
+    if (vimiumBinds.indexOf(alphanumeric[i]) == -1) {
+        bindedKeys += alphanumeric[i];
     }
 }
 
@@ -19,7 +18,6 @@ chrome.runtime.onMessage.addListener(
 );
 
 chrome.tabs.onActivated.addListener(function() {
-    // beforeMoveじゃない時どうする的な
     reset();
 });
 

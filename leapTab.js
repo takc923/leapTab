@@ -5,7 +5,6 @@
 var vimiumBinds = "bdfghijklnmoprtuxyzBFGHJKLNOPTX0123456789";
 var originalFavIconUrl;
 var beforeMoveFlag = false;
-// TODO: alphanumericとalphabetsらへんの整理
 var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var bindedKeys = "";
 for (var i = 0; i < alphanumeric.length; i++) {
