@@ -3,7 +3,6 @@
 // 2. localstrageに入れる
 // 3. option pageで指定
 var vimiumBinds = "bdfghijklnmoprtuxyzBFGHJKLNOPTX0123456789";
-var originalTitle;
 var originalFavIconUrl;
 var beforeMoveFlag = false;
 // TODO: alphanumericとalphabetsらへんの整理
@@ -17,7 +16,7 @@ for (var i = 0; i < alphanumeric.length; i++) {
 }
 
 window.addEventListener("load", function(){
-    originalTitle = document.title;
+    // TODO: resetするとき直前のfaviconにした方がいい
     originalFavIconUrl = getFavIconUrl();
     document.addEventListener("keydown", function(evt){
         if (document.activeElement.tagName != "BODY")  return;
@@ -56,11 +55,11 @@ function isBinded(code) {
 }
 
 function change(args) {
-    favicon.change(getAlphanumericImageUrl(args.character), args.title);
+    favicon.change(getAlphanumericImageUrl(args.character));
 }
 
 function reset() {
-    favicon.change(originalFavIconUrl, document.title.replace(/^.\| (.*)/, "$1"));
+    favicon.change(originalFavIconUrl);
 }
 
 // 正規表現で出来るやろ...
