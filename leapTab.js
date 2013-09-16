@@ -4,6 +4,7 @@
 // 3. option pageで指定
 var vimiumBinds = "bdfghijklnmoprtuxyzBFGHJKLNOPTX0123456789";
 var originalFavIconUrl;
+// TODO: flag管理じゃなくて、faviconのurlを見て判断すれば良いのでは
 var beforeLeapFlag = false;
 var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var bindedKeys = "";
