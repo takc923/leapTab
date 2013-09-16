@@ -10,16 +10,16 @@ for (var i = 0; i < alphanumeric.length; i++) {
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         switch (request.action) {
-        case "prepareMove" : prepareMove();      break;
+        case "prepareLeap" : prepareLeap();      break;
         case "reset"       : reset();            break;
-        case "move"        : move(request.code); break;
+        case "leap"        : leap(request.code); break;
         }
     }
 );
 
 chrome.tabs.onActivated.addListener(reset);
 
-function prepareMove() {
+function prepareLeap() {
     // TODO: 今いるタブはスキップしたい
     chrome.windows.getCurrent({populate: true}, function(win) {
         for (var i = 0; i < bindedKeys.length && i < win.tabs.length; i++) {
@@ -43,7 +43,7 @@ function reset() {
     });
 }
 
-function move(code) {
+function leap(code) {
     chrome.windows.getCurrent({populate: true}, function(win){
         if (bindedKeys.indexOf(String.fromCharCode(code)) >= win.tabs.length) reset();
         chrome.tabs.update(win.tabs[bindedKeys.indexOf(String.fromCharCode(code))].id, {active: true});
