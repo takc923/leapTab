@@ -17,9 +17,7 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-chrome.tabs.onActivated.addListener(function() {
-    reset();
-});
+chrome.tabs.onActivated.addListener(reset);
 
 function prepareMove() {
     // TODO: 今いるタブはスキップしたい
