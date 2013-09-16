@@ -19,6 +19,7 @@
 * leap tabなんだからmoveじゃなくてleapだろ
 * manifest.jsonの書式合わせたい
 * coding standard的な
+* faviconが小文字と大文字分かりづらい
 
 # Others
 * favicon提供元
