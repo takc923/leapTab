@@ -3,6 +3,8 @@
 # TODO
 * flag管理じゃなくて、faviconのurlを見て判断すれば良いのでは
 * prefixキーの変更
+    * gmail, google calendarでaだとうごかない
+* google calendarのfaviconが変わらない
 * bindedなキーの設定
 * originalFavIconUrlのところ、最初に取得したやつから変わってる可能性あるからなんとかする
 * alphabet, unbindデータを一括管理
