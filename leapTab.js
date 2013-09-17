@@ -60,7 +60,6 @@ function reset() {
     favicon.change(originalFavIconUrl);
 }
 
-// 正規表現で出来るやろ...
 function isAlphabet(code) {
     return String.fromCharCode(code).search(/^[a-zA-Z]$/) == 0;
 }
