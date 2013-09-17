@@ -5,10 +5,10 @@
 * prefixキーの変更
     * gmail, google calendarでaだとうごかない
 * google calendarのfaviconが変わらない
+    * コンフルにも変わらないページある
 * bindedなキーの設定
 * originalFavIconUrlのところ、最初に取得したやつから変わってる可能性あるからなんとかする
 * alphabet, unbindデータを一括管理
-
 * これ書く
 * manifest.jsonのupdate
 * 2桁で移動
