@@ -6,6 +6,7 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
+            // あとで直す
             "exclude_matches":["https://kcw.kddi.ne.jp/*"],
             "js": ["favicon.min.js", "leapTab.js"]
         }
