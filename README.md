@@ -1,8 +1,6 @@
 # README
 
 # TODO
-* flag管理じゃなくて、faviconのurlを見て判断すれば良いのでは
-* chatworkのfaviconの未読件数表示が全く機能しなくなったので、直す。
 * ロケーションバーにいる時のイベントって拾えたっけ？拾えたらそこでも使えるようにしたい。
     * その場合、修飾キーなしだとつらいなあ。普通にurl入力する時に反応したらやだし。
 * prefixキーの変更
@@ -11,8 +9,8 @@
 * google calendarのfaviconが変わらない
     * コンフルにも変わらないページある
 * bindedなキーの設定
-* originalFavIconUrlのところ、最初に取得したやつから変わってる可能性あるからなんとかする
 * alphabet, unbindデータを一括管理
+* prefix keyを2回叩くと、足りないタブにfavicon割り振る的な
 * これ書く
 * manifest.jsonのupdate
 * 2桁で移動
@@ -27,8 +25,6 @@
 * manifest.jsonの書式合わせたい
 * coding standard的な
 * faviconが小文字と大文字分かりづらい
-* 元々faviconがないページだとresetした時faviconが戻らない
-
 
 # Others
 * favicon提供元
