@@ -6,6 +6,7 @@
     * その場合、修飾キーなしだとつらいなあ。普通にurl入力する時に反応したらやだし。
 * prefixキーの変更
     * gmail, google calendarでaだとうごかない
+    * inputやtextareaにいても即座に移動したい！から、修飾キーつきのprefix keyが設定出来る必要性感じる
 * google calendarのfaviconが変わらない
     * コンフルにも変わらないページある
 * bindedなキーの設定
