@@ -15,6 +15,6 @@
     },
     "permissions": ["tabs"],
     "web_accessible_resources": [
-        "favicon/*.ico"
+        "favicon/*"
     ]
 }
