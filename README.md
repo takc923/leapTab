@@ -3,6 +3,7 @@
 # TODO
 * flag管理じゃなくて、faviconのurlを見て判断すれば良いのでは
 * ロケーションバーにいる時のイベントって拾えたっけ？拾えたらそこでも使えるようにしたい。
+    * その場合、修飾キーなしだとつらいなあ。普通にurl入力する時に反応したらやだし。
 * prefixキーの変更
     * gmail, google calendarでaだとうごかない
 * google calendarのfaviconが変わらない
