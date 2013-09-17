@@ -2,6 +2,7 @@ var vimiumBinds = "bdfghijklmnoprtuxyzBFGHJKLNOPTX0123456789";
 var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var bindedKeys = "";
 var originalTabs;
+var defaultFaviconUrl = chrome.extension.getURL("favicon/default_favicon.png");
 for (var i = 0; i < alphanumeric.length; i++) {
     if (vimiumBinds.indexOf(alphanumeric[i]) == -1) {
         bindedKeys += alphanumeric[i];
@@ -33,7 +34,7 @@ function prepareLeap() {
 function reset() {
     if (! originalTabs) return;
     for (var i = 0;i < originalTabs.length; i++) {
-        changeFavicon(originalTabs[i].id, originalTabs[i].favIconUrl);
+        changeFavicon(originalTabs[i].id, originalTabs[i].favIconUrl || defaultFaviconUrl);
     }
     originalTabs = null;
 }
