@@ -2,6 +2,7 @@
 
 # TODO
 * flag管理じゃなくて、faviconのurlを見て判断すれば良いのでは
+* ロケーションバーにいる時のイベントって拾えたっけ？拾えたらそこでも使えるようにしたい。
 * prefixキーの変更
     * gmail, google calendarでaだとうごかない
 * google calendarのfaviconが変わらない
