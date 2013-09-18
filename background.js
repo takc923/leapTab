@@ -34,7 +34,11 @@ function prepareLeap() {
 function reset() {
     if (! originalTabs) return;
     for (var i = 0;i < originalTabs.length; i++) {
-        // favIconUrlがnull以外に、chrome-extension://*なURLの時もdefaultFavi
+        // ここ綺麗にしたい。searchの中身もfrontendと同じだし
+        // faviconのキャッシュとかでleapする前からalphanumericImageなことがあるので
+        if (originalTabs[i].favIconUrl.search(/^chrome-extension.*ico$/) == 0) {
+            originalTabs[i].favIconUrl = null;
+        }
         changeFavicon(originalTabs[i].id, originalTabs[i].favIconUrl || defaultFavIconUrl);
     }
     originalTabs = null;
