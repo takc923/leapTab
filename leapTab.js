@@ -1,14 +1,16 @@
 var availableKeys = "";
+var prefixEvent = "";
 
 window.addEventListener("load", function(){
     chrome.runtime.sendMessage({
         action: "getSettings"
     }, function(response) {
         availableKeys = response.availableKeys;
+        prefixEvent = response.prefixEvent;
     });
     document.addEventListener("keydown", function(evt){
         if (document.activeElement.tagName != "BODY")  return;
-        if(! isBeforeLeap() && evt.keyCode == 65 && ! evt.shiftKey) {
+        if(! isBeforeLeap() && isPrefixEvent(evt)) {
             chrome.runtime.sendMessage({
                 action : "prepareLeap"
             });
@@ -55,4 +57,8 @@ function getFavIconUrl() {
         }
     }
     return location.origin + "/favicon.ico";
+}
+
+function isPrefixEvent(evt) {
+    return evt.shiftKey == prefixEvent.shiftKey && evt.keyCode == prefixEvent.keyCode;
 }
