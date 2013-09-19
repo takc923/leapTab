@@ -12,6 +12,7 @@
     "background": {
         "scripts": ["background.js"]
     },
+    "options_page": "options.html",
     "permissions": ["tabs"],
     "web_accessible_resources": [
         "favicon/*"
