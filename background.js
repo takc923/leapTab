@@ -9,7 +9,12 @@ chrome.runtime.onMessage.addListener(
         case "prepareLeap" : prepareLeap();      break;
         case "reset"       : reset();            break;
         case "leap"        : leap(request.code); break;
-        case "getSettings"        : sendResponse({availableKeys: availableKeys}); break;
+            // sendResponseここでやってんのなんとかしたい
+        case "getSettings"        : sendResponse({
+            availableKeys: availableKeys,
+            // ここkeyとかeventとかの名前ちゃんとしたい。
+            prefixEvent: keyStr2EventLikeObj(localStorage['prefixKey'] || "a")
+        }); break;
         }
     }
 );
@@ -65,13 +70,22 @@ function getAlphanumericImageUrl(character) {
     return chrome.extension.getURL("favicon/" + prefix + character + ".ico");
 }
 
+// TODO: refactorしたい
 function getAvailableKeys() {
     var unavailableKeys = localStorage["unbindKeys"] || "";
     var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var availableKeys = "";
     for (var i = 0; i < alphanumeric.length; i++) {
         if (unavailableKeys.indexOf(alphanumeric[i]) == -1) {
             availableKeys += alphanumeric[i];
         }
     }
+    return availableKeys;
 }
 
+function keyStr2EventLikeObj(keyStr) {
+    return {
+        shiftKey: keyStr.search(/^[A-Z]$/) == 0,
+        keyCode: keyStr.toUpperCase().charCodeAt(0)
+    };
+}
