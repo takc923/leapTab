@@ -1,13 +1,6 @@
-var vimiumBinds = localStorage["unbindKeys"] || "";
-var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var availableKeys = "";
+var availableKeys = getAvailableKeys();
 var originalTabs;
 var defaultFavIconUrl = chrome.extension.getURL("favicon/default_favicon.png");
-for (var i = 0; i < alphanumeric.length; i++) {
-    if (vimiumBinds.indexOf(alphanumeric[i]) == -1) {
-        availableKeys += alphanumeric[i];
-    }
-}
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -71,3 +64,14 @@ function getAlphanumericImageUrl(character) {
     }
     return chrome.extension.getURL("favicon/" + prefix + character + ".ico");
 }
+
+function getAvailableKeys() {
+    var unavailableKeys = localStorage["unbindKeys"] || "";
+    var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (var i = 0; i < alphanumeric.length; i++) {
+        if (unavailableKeys.indexOf(alphanumeric[i]) == -1) {
+            availableKeys += alphanumeric[i];
+        }
+    }
+}
+
