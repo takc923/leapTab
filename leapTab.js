@@ -1,18 +1,11 @@
-// TODO: ここらへんの変数backgroundでも使ってるからまとめたい
-// 1. globalな変数に入れる。window.settings的な
-// 2. localstrageに入れる
-// 3. option pageで指定
-var vimiumBinds = "bdfghijklnmoprtuxyzBFGHJKLNOPTX0123456789";
-var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var bindedKeys = "";
-for (var i = 0; i < alphanumeric.length; i++) {
-    if (vimiumBinds.indexOf(alphanumeric[i]) == -1) {
-        bindedKeys += alphanumeric[i];
-    }
-}
+var availableKeys = "";
 
 window.addEventListener("load", function(){
-    // TODO: resetするとき直前のfaviconにした方がいい
+    chrome.runtime.sendMessage({
+        action: "getSettings"
+    }, function(response) {
+        availableKeys = response.availableKeys;
+    });
     document.addEventListener("keydown", function(evt){
         if (document.activeElement.tagName != "BODY")  return;
         if(! isBeforeLeap() && evt.keyCode == 65 && ! evt.shiftKey) {
@@ -43,7 +36,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 // TODO: 名前微妙 isEnableKeyとか有効なキーかどうか的な名前のほうが良さそう
 function isBinded(code) {
-    return bindedKeys.indexOf(String.fromCharCode(code)) != -1;
+    return availableKeys.indexOf(String.fromCharCode(code)) != -1;
 }
 
 function isAlphabet(code) {
