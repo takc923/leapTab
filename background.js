@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(
         case "getSettings"        : sendResponse({
             availableKeys: availableKeys,
             // ここkeyとかeventとかの名前ちゃんとしたい。
-            prefixEvent: keyStr2EventLikeObj(localStorage['prefixKey'] || "a")
+            prefixEvent: getPrefixKeyEvent()
         }); break;
         }
     }
@@ -83,9 +83,12 @@ function getAvailableKeys() {
     return availableKeys;
 }
 
-function keyStr2EventLikeObj(keyStr) {
+function getPrefixKeyEvent() {
     return {
-        shiftKey: keyStr.search(/^[A-Z]$/) == 0,
-        keyCode: keyStr.toUpperCase().charCodeAt(0)
+        keyCode  : localStorage["prefixKey"].toUpperCase().charCodeAt(0),
+        shiftKey : localStorage["prefixModifierKey"] == "shiftKey",
+        ctrlKey  : localStorage["prefixModifierKey"] == "ctrlKey",
+        metaKey  : localStorage["prefixModifierKey"] == "metaKey",
+        altKey   : localStorage["prefixModifierKey"] == "altKey"
     };
 }

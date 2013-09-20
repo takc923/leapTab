@@ -60,5 +60,9 @@ function getFavIconUrl() {
 }
 
 function isPrefixEvent(evt) {
-    return evt.shiftKey == prefixEvent.shiftKey && evt.keyCode == prefixEvent.keyCode;
+    return evt.shiftKey == prefixEvent.shiftKey
+        && evt.ctrlKey == prefixEvent.ctrlKey
+        && evt.metaKey == prefixEvent.metaKey
+        && evt.altKey == prefixEvent.altKey
+        && evt.keyCode == prefixEvent.keyCode;
 }
