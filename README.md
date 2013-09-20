@@ -1,14 +1,14 @@
 # README
 
 # TODO
+* gmail, google calendarでaだとうごかない
+    * console.log見るとエラー出てるから確認しながらデバッグする
+* inputやtextareaにいても即座に移動したい！から、修飾キーつきのprefix keyが設定出来る必要性感じる
 * option pageのvalidation
 * option pageで値を変更したら、リロードせずに変更が反映される機能
 * prefix keyの修飾キー対応
 * ロケーションバーにいる時のイベントって拾えたっけ？拾えたらそこでも使えるようにしたい。
     * その場合、修飾キーなしだとつらいなあ。普通にurl入力する時に反応したらやだし。
-* prefixキーの変更
-    * gmail, google calendarでaだとうごかない
-    * inputやtextareaにいても即座に移動したい！から、修飾キーつきのprefix keyが設定出来る必要性感じる
 * bind設定をURLごとに行う
 * 修飾キーをfaviconの色で表現したとして、移動キーに修飾キー対応
 * google calendarのfaviconが変わらない
