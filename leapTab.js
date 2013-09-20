@@ -2,12 +2,7 @@ var availableKeys = "";
 var prefixEvent = "";
 
 window.addEventListener("load", function(){
-    chrome.runtime.sendMessage({
-        action: "getSettings"
-    }, function(response) {
-        availableKeys = response.availableKeys;
-        prefixEvent = response.prefixEvent;
-    });
+    loadSettings();
     document.addEventListener("keydown", function(evt){
         if (document.activeElement.tagName != "BODY")  return;
         if(! isBeforeLeap() && isPrefixEvent(evt)) {
@@ -31,9 +26,18 @@ window.addEventListener("load", function(){
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     switch (request.action) {
     case "change" : favicon.change(request.favIconUrl); break;
-    case "reset"       : reset();       break;
+    case "reloadSettings"       : loadSettings();       break;
     }
 });
+
+function loadSettings() {
+    chrome.runtime.sendMessage({
+        action: "getSettings"
+    }, function(response) {
+        availableKeys = response.availableKeys;
+        prefixEvent = response.prefixEvent;
+    });
+}
 
 
 // TODO: 名前微妙 isEnableKeyとか有効なキーかどうか的な名前のほうが良さそう
