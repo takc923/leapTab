@@ -7,6 +7,7 @@ window.onload = function(){
 function save_options() {
   localStorage["unbindKeys"] = document.getElementById("unbind-keys").value;
   localStorage["prefixKey"] = document.getElementById("prefix-key").value;
+  localStorage["prefixModifierKey"] = document.getElementById("prefix-modifier-key").value;
 
   // Update status to let user know options were saved.
   var status = document.getElementById("status");
@@ -20,4 +21,5 @@ function save_options() {
 function restore_options() {
   document.getElementById("unbind-keys").value = localStorage["unbindKeys"] || "";
   document.getElementById("prefix-key").value = localStorage["prefixKey"] || "";
+  document.getElementById("prefix-modifier-key").value = localStorage["prefixModifierKey"] || "";
 }
