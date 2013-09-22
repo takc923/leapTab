@@ -1,12 +1,11 @@
 # README
 
 # TODO
+* 修飾キーを使ってる場合はキー入力中でも反応するようにする
 * gmail, google calendarでaだとうごかない
     * console.log見るとエラー出てるから確認しながらデバッグする
 * inputやtextareaにいても即座に移動したい！から、修飾キーつきのprefix keyが設定出来る必要性感じる
 * option pageのvalidation
-* option pageで値を変更したら、リロードせずに変更が反映される機能
-* prefix keyの修飾キー対応
 * ロケーションバーにいる時のイベントって拾えたっけ？拾えたらそこでも使えるようにしたい。
     * その場合、修飾キーなしだとつらいなあ。普通にurl入力する時に反応したらやだし。
 * bind設定をURLごとに行う
