@@ -1,6 +1,8 @@
 var availableKeys = "";
 var prefixKeyEvent = "";
 var lastActiveElement;
+// TODO: このフラグ使ってたら、prepareLeapしたあと、activeなタブを手動で変更した時flagがtrueのままfaviconが元に戻る。
+var beforeLeapFlag = false;
 
 window.addEventListener("load", function(){
     loadSettings();
@@ -12,17 +14,20 @@ window.addEventListener("load", function(){
             });
             lastActiveElement = document.activeElement;
             document.activeElement.blur();
+            beforeLeapFlag = true;
         }else if(isBeforeLeap() && isBinded(evt.keyCode)){
             chrome.runtime.sendMessage({
                 action : "leap",
                 code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
             });
             evt.stopPropagation();
+            beforeLeapFlag = false;
         } else if (isBeforeLeap() && evt.keyCode == 27){
             chrome.runtime.sendMessage({
                 action : "reset"
             });
             lastActiveElement.focus();
+            beforeLeapFlag = false;
         }
     });
 });
@@ -54,7 +59,7 @@ function isAlphabet(code) {
 }
 
 function isBeforeLeap() {
-    return getFavIconUrl().search(/^chrome-extension.*ico$/) == 0;
+    return beforeLeapFlag;
 }
 
 function getFavIconUrl() {
