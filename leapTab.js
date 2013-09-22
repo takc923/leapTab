@@ -1,14 +1,17 @@
 var availableKeys = "";
 var prefixEvent = "";
+var lastActiveElement;
 
 window.addEventListener("load", function(){
     loadSettings();
     document.addEventListener("keydown", function(evt){
-        if (document.activeElement.tagName != "BODY")  return;
+        if (document.activeElement.tagName != "BODY" && ! prefixEvent.ctrlKey && ! prefixEvent.metaKey && ! prefixEvent.altKey)  return;
         if(! isBeforeLeap() && isPrefixEvent(evt)) {
             chrome.runtime.sendMessage({
                 action : "prepareLeap"
             });
+            lastActiveElement = document.activeElement;
+            document.activeElement.blur();
         }else if(isBeforeLeap() && isBinded(evt.keyCode)){
             chrome.runtime.sendMessage({
                 action : "leap",
@@ -19,6 +22,7 @@ window.addEventListener("load", function(){
             chrome.runtime.sendMessage({
                 action : "reset"
             });
+            lastActiveElement.focus();
         }
     });
 });
