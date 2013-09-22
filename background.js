@@ -1,5 +1,5 @@
 var availableKeys = getAvailableKeys();
-var originalTabs;
+var originalTabs = null;
 var defaultFavIconUrl = chrome.extension.getURL("favicon/default_favicon.png");
 
 chrome.runtime.onMessage.addListener(
@@ -22,16 +22,17 @@ chrome.tabs.onActivated.addListener(reset);
 
 function prepareLeap() {
     chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
-        originalTabs = tabs;
+        originalTabs = {};
         for (var i = 0; i < availableKeys.length && i < tabs.length; i++) {
             changeFavicon(tabs[i].id, getAlphanumericImageUrl(availableKeys[i]));
+            originalTabs[availableKeys[i]] = tabs[i];
         }
     });
 }
 
 function reset() {
     if (! originalTabs) return;
-    for (var i = 0;i < originalTabs.length; i++) {
+    for (var i in originalTabs) {
         // ここ綺麗にしたい。searchの中身もfrontendと同じだし
         // faviconのキャッシュとかでleapする前からalphanumericImageなことがあるので
         if (! originalTabs[i].favIconUrl || originalTabs[i].favIconUrl.search(/^chrome-extension.*ico$/) == 0) {
@@ -43,10 +44,8 @@ function reset() {
 }
 
 function leap(code) {
-    chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
-        if (availableKeys.indexOf(String.fromCharCode(code)) >= tabs.length) reset();
-        chrome.tabs.update(tabs[availableKeys.indexOf(String.fromCharCode(code))].id, {active: true});
-    });
+    if (availableKeys.indexOf(String.fromCharCode(code)) >= originalTabs.length) reset();
+    chrome.tabs.update(originalTabs[String.fromCharCode(code)].id, {active: true});
 }
 
 function changeFavicon(tabId, favIconUrl) {
