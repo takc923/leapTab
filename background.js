@@ -21,11 +21,10 @@ chrome.runtime.onMessage.addListener(
 chrome.tabs.onActivated.addListener(reset);
 
 function prepareLeap() {
-    // TODO: 今いるタブはスキップしたい
-    chrome.windows.getCurrent({populate: true}, function(win) {
-        originalTabs = win.tabs;
-        for (var i = 0; i < availableKeys.length && i < win.tabs.length; i++) {
-            changeFavicon(win.tabs[i].id, getAlphanumericImageUrl(availableKeys[i]));
+    chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
+        originalTabs = tabs;
+        for (var i = 0; i < availableKeys.length && i < tabs.length; i++) {
+            changeFavicon(tabs[i].id, getAlphanumericImageUrl(availableKeys[i]));
         }
     });
 }
@@ -44,9 +43,9 @@ function reset() {
 }
 
 function leap(code) {
-    chrome.windows.getCurrent({populate: true}, function(win){
-        if (availableKeys.indexOf(String.fromCharCode(code)) >= win.tabs.length) reset();
-        chrome.tabs.update(win.tabs[availableKeys.indexOf(String.fromCharCode(code))].id, {active: true});
+    chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
+        if (availableKeys.indexOf(String.fromCharCode(code)) >= tabs.length) reset();
+        chrome.tabs.update(tabs[availableKeys.indexOf(String.fromCharCode(code))].id, {active: true});
     });
 }
 
