@@ -58,10 +58,10 @@ function isBeforeLeap() {
 }
 
 function getFavIconUrl() {
-    var linkDoms = document.head.getElementsByTagName("link");
-    for(var i = 0; i < linkDoms.length; i++) {
-        if (linkDoms[i].rel.search(/^\s*(shortcut)?\s*icon\s*(shortcut)?\s*$/i) != -1) {
-            return linkDoms[i].href;
+    var linkElements = document.head.getElementsByTagName("link");
+    for(var i = 0; i < linkElements.length; i++) {
+        if (linkElements[i].rel.search(/^\s*(shortcut)?\s*icon\s*(shortcut)?\s*$/i) != -1) {
+            return linkElements[i].href;
         }
     }
     return location.origin + "/favicon.ico";
