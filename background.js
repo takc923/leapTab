@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(
         case "getSettings"        : sendResponse({
             availableKeys: availableKeys,
             // ここkeyとかeventとかの名前ちゃんとしたい。
-            prefixEvent: getPrefixKeyEvent()
+            prefixKeyEvent: getPrefixKeyEvent()
         }); break;
         }
     }
