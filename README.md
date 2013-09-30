@@ -1,6 +1,9 @@
 # README
 
 # TODO
+* prefix keyに修飾キー使って、textareaにフォーカスしてる状態で移動する時、文字入力されちゃうの何とかしたい。
+* 移動先faviconで、大文字の場合のfaviconの背景を変えてシフトかどうか分かりやすくする案。
+    * ほんとはfavicon自体を変えたいけどそんな能力はない
 * gmail, google calendarでaだとうごかない
     * console.log見るとエラー出てるから確認しながらデバッグする
 * option pageのvalidation
