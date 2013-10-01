@@ -2,6 +2,13 @@
 
 # TODO
 * chatworkのfaviconが変わらなくなる。実装がどうバッティングしているのか調べる。
+
+```
+<link rel="shortcut icon" id="_favicon" href="./image/favicon/favicon01.ico" type="image/vnd.microsoft.icon">
+```
+
+こんなアイコンが追加されていた。headにこういうelementが追加されたら自分で追加したfaviconを消すとか、なんか対応した方がいいなあ。
+
 * gmail, google calendarでaだとうごかない
     * console.log見るとエラー出てるから確認しながらデバッグする
 * option pageのvalidation
@@ -9,9 +16,6 @@
 * ロケーションバーにいる時のイベントって拾えたっけ？拾えたらそこでも使えるようにしたい。その場合修飾キーありで。
 * bind設定をURLごとに行う
 * 修飾キーをfaviconの色で表現したとして、移動キーに修飾キー対応
-* google calendarのfaviconが変わらない
-    * favicon.min.jsが読み込まれてなかった。謎。
-    * コンフルにも変わらないページある
 * prefix keyを2回叩くと、足りないタブにfavicon割り振る的な
 * これ書く
 * manifest.jsonのupdate
@@ -28,7 +32,12 @@
 * coding standard的な
 * faviconが小文字と大文字分かりづらい
 
-# Others
+# BUGS
+* google calendarのfaviconが変わらない
+    * favicon.min.jsが読み込まれてなかった。謎。
+    * コンフルにも変わらないページある
+
+# OTHERS
 * favicon提供元
     * 株式会社テトラクローマ http://tetrachroma.co.jp/blog/130820_dl_favicon/
 * favicon.min.js https://github.com/Dlom/favicon.js
