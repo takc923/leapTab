@@ -2,8 +2,6 @@
 
 # TODO
 * chatworkのfaviconが変わらなくなる。実装がどうバッティングしているのか調べる。
-* 移動先faviconで、大文字の場合のfaviconの背景を変えてシフトかどうか分かりやすくする案。
-    * ほんとはfavicon自体を変えたいけどそんな能力はない
 * gmail, google calendarでaだとうごかない
     * console.log見るとエラー出てるから確認しながらデバッグする
 * option pageのvalidation
