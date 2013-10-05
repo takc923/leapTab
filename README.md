@@ -1,16 +1,6 @@
 # README
 
 # TODO
-* chatworkのfaviconが変わらなくなる。実装がどうバッティングしているのか調べる。
-
-```
-<link rel="shortcut icon" id="_favicon" href="./image/favicon/favicon01.ico" type="image/vnd.microsoft.icon">
-```
-
-こんなアイコンが追加されていた。headにこういうelementが追加されたら自分で追加したfaviconを消すとか、なんか対応した方がいいなあ。
-
-* gmail, google calendarでaだとうごかない
-    * console.log見るとエラー出てるから確認しながらデバッグする
 * option pageのvalidation
 * option pageをもっと分かりやすく。
 * ロケーションバーにいる時のイベントって拾えたっけ？拾えたらそこでも使えるようにしたい。その場合修飾キーありで。
