@@ -4,21 +4,25 @@ var defaultFavIconUrl = chrome.extension.getURL("favicon/default_favicon.png");
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        // applyとか使って書き直したい
+        var result = {};
         switch (request.action) {
-        case "prepareLeap" : prepareLeap();      break;
-        case "reset"       : reset();            break;
-        case "leap"        : leap(request.code); break;
-            // sendResponseここでやってんのなんとかしたい
-        case "getSettings"        : sendResponse({
-            availableKeys: availableKeys,
-            prefixKeyEvent: getPrefixKeyEvent()
-        }); break;
+        case "prepareLeap" : prepareLeap();          break;
+        case "reset"       : reset();                break;
+        case "leap"        : leap(request.code);     break;
+        case "getSettings" : result = getSettings(); break;
         }
+        sendResponse(result);
     }
 );
 
 chrome.tabs.onActivated.addListener(reset);
+
+function getSettings() {
+    return {
+        availableKeys: availableKeys,
+        prefixKeyEvent: getPrefixKeyEvent()
+    };
+}
 
 function prepareLeap() {
     chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
@@ -33,8 +37,6 @@ function prepareLeap() {
 function reset() {
     if (! originalTabs) return;
     for (var i in originalTabs) {
-        // ここ綺麗にしたい。searchの中身もfrontendと同じだし
-        // faviconのキャッシュとかでleapする前からalphanumericImageなことがあるので
         if (! originalTabs[i].favIconUrl || originalTabs[i].favIconUrl.search(/^chrome-extension.*ico$/) == 0) {
             originalTabs[i].favIconUrl = null;
         }
@@ -67,7 +69,6 @@ function getAlphanumericImageUrl(character) {
     return chrome.extension.getURL("favicon/" + prefix + character + ".ico");
 }
 
-// TODO: refactorしたい
 function getAvailableKeys() {
     var unavailableKeys = localStorage["unbindKeys"] || "";
     var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
