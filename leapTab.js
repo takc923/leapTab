@@ -15,7 +15,7 @@ window.addEventListener("load", function(){
             lastActiveElement = document.activeElement;
             document.activeElement.blur();
             beforeLeapFlag = true;
-        }else if(isBeforeLeap() && isBinded(evt.keyCode)){
+        }else if(isBeforeLeap() && isAvailableKey(evt.keyCode)){
             chrome.runtime.sendMessage({
                 action : "leap",
                 code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
@@ -48,9 +48,7 @@ function loadSettings() {
     });
 }
 
-
-// TODO: 名前微妙 isEnableKeyとか有効なキーかどうか的な名前のほうが良さそう
-function isBinded(code) {
+function isAvailableKey(code) {
     return availableKeys.indexOf(String.fromCharCode(code)) != -1;
 }
 
