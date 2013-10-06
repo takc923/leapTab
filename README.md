@@ -1,6 +1,9 @@
 # README
 
 # TODO
+* 移動した時のキー入力でもとのページのキーショートカットを発動させないようにする
+    * dummyのdom elementを作ってそこにフォーカスさせたら、発動しなくなるのでは？
+    * jquery.textcompleteはenterした時に改行しないのはどうしてか調べる
 * prefix keyのあとにprefix key or space keyで何かが起きるようにする
     * 直前のタブに移動 or 数が足りなかったときに足りない分のfaviconを変える
 * option pageのvalidation
