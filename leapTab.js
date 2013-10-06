@@ -8,8 +8,10 @@ var beforeLeapFlag = false;
 window.addEventListener("load", function(){
     loadSettings(function(hasFavicon){
         if (! hasFavicon) setDummyFavIcon();
+
         document.addEventListener("keydown", function(evt){
             if (document.activeElement.tagName != "BODY" && ! prefixKeyEvent.ctrlKey && ! prefixKeyEvent.metaKey && ! prefixKeyEvent.altKey)  return;
+
             if(! isBeforeLeap() && isPrefixEvent(evt)) {
                 chrome.runtime.sendMessage({
                     action : "prepareLeap"
@@ -33,7 +35,6 @@ window.addEventListener("load", function(){
             }
         });
     });
-
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -82,6 +83,8 @@ function isPrefixEvent(evt) {
         && evt.keyCode == prefixKeyEvent.keyCode;
 }
 
+// TODO: 名前変えろ
+// TODO: isUndoってどうなん、あとsetDummyなんとかとかぶってる。resetするならreset用に作ったほうがいいのでは
 function change(iconUrl, isUndo) {
     if (changeLinkIfExists(iconUrl, isUndo)) return;
 
@@ -95,6 +98,7 @@ function change(iconUrl, isUndo) {
 function changeLinkIfExists(iconUrl, isUndo) {
     var links = document.head.getElementsByTagName("link");
     var exists = false;
+    // TODO: filterとかmapで書き換えられるよね
     for (var key in links) {
         if (links[key].rel != undefined && links[key].rel.search(/^\s*(shortcut\s+)?icon(\s+shortcut)?\s*$/i) != -1) {
             if (isUndo && links[key].lastHref != undefined) {
@@ -109,7 +113,7 @@ function changeLinkIfExists(iconUrl, isUndo) {
     return exists;
 }
 
-
+// flagのhasFaviconと名前かぶってるのきもい
 function hasFavicon(callback) {
     var links = document.head.getElementsByTagName("link");
     var iconLinks = links.filter(function(link){
