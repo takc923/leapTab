@@ -116,11 +116,19 @@ function changeLinkIfExists(iconUrl, isUndo) {
 // flagのhasFaviconと名前かぶってるのきもい
 function hasFavicon(callback) {
     var links = document.head.getElementsByTagName("link");
-    var iconLinks = links.filter(function(link){
-        return link.rel != undefined
-            && link.rel.search(/^\s*(shortcut\s+)?icon(\s+shortcut)?\s*$/i) != -1;
-    });
-    if (iconLinks.length != 0) return true;
+    var iconLinks = [];
+    // linksがnodelistのせいでfilterが使えなくなったからとりあえずこうしてるけど、リファクタリング出来ると思う
+    for(var key in links) {
+        if (links[key].rel != undefined
+            && links[key].rel.search(/^\s*(shortcut\s+)?icon(\s+shortcut)?\s*$/i) != -1)
+            // ここでcallback発動させてreturnでいいんじゃね
+            iconLinks.push(links[key]);
+    }
+
+    if (iconLinks.length != 0) {
+        callback(true);
+        return;
+    }
 
     var req = new XMLHttpRequest();
     req.open("GET", location.origin + "/favicon.ico");
