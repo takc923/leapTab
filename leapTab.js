@@ -8,8 +8,11 @@ var beforeLeapFlag = false;
 window.addEventListener("load", function(){
     loadSettings(function(hasFavicon){
         if (! hasFavicon) setDummyFavIcon();
+        setDummyElement();
 
         document.addEventListener("keydown", function(evt){
+            // bodyじゃなくてもここスルーするのバグぽい
+            // prepare leapした後2回esc押さないともとに戻らない
             if (document.activeElement.tagName != "BODY" && ! prefixKeyEvent.ctrlKey && ! prefixKeyEvent.metaKey && ! prefixKeyEvent.altKey)  return;
 
             if(! isBeforeLeap() && isPrefixEvent(evt)) {
@@ -17,7 +20,7 @@ window.addEventListener("load", function(){
                     action : "prepareLeap"
                 });
                 lastActiveElement = document.activeElement;
-                document.activeElement.blur();
+                document.getElementById("leaptab-dummy-element").focus();
                 beforeLeapFlag = true;
             }else if(isBeforeLeap() && isAvailableKey(evt.keyCode)){
                 chrome.runtime.sendMessage({
@@ -135,4 +138,18 @@ function hasFavicon(callback) {
     req.onload = function(){callback(true);};
     req.onerror = function(){callback(false);};
     req.send();
+}
+
+function setDummyElement() {
+    var dummyInput = document.createElement("input");
+    dummyInput.type = "text";
+    dummyInput.style.height = "0px";
+    dummyInput.style.width = "0px";
+    dummyInput.style.position = "fixed";
+    dummyInput.style.top = "0px";
+    dummyInput.style.left = "0px";
+    dummyInput.style.opacity = "0";
+    dummyInput.style.zIndex = "0";
+    dummyInput.id = "leaptab-dummy-element";
+    document.body.appendChild(dummyInput);
 }
