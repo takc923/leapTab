@@ -1,6 +1,7 @@
 # README
 
 # TODO
+* チャットワークとかでloadsettingで失敗してる。具体的にはcallback関数の引数がundefinedになってる。
 * 移動した時のキー入力でもとのページのキーショートカットを発動させないようにする
     * dummyのdom elementを作ってそこにフォーカスさせたら、発動しなくなるのでは？
     * jquery.textcompleteはenterした時に改行しないのはどうしてか調べる
@@ -26,11 +27,6 @@
 * manifest.jsonの書式合わせたい
 * coding standard的な
 * faviconが小文字と大文字分かりづらい
-
-# BUGS
-* google calendarのfaviconが変わらない
-    * favicon.min.jsが読み込まれてなかった。謎。
-    * コンフルにも変わらないページある
 
 # OTHERS
 * favicon提供元
