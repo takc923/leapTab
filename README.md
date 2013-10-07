@@ -4,6 +4,7 @@
 * チャットワークとかでloadsettingで失敗してる。具体的にはcallback関数の引数がundefinedになってる。
 * 移動した時のキー入力でもとのページのキーショートカットを発動させないようにする
     * dummyのdom elementを作ってそこにフォーカスさせたら、発動しなくなるのでは？
+    * これ実現できたらvimiumのキーバインドに縛られなくて良いのでは
     * jquery.textcompleteはenterした時に改行しないのはどうしてか調べる
 * prefix keyのあとにprefix key or space keyで何かが起きるようにする
     * 直前のタブに移動 or 数が足りなかったときに足りない分のfaviconを変える
