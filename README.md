@@ -1,7 +1,7 @@
 # README
 
 # TODO
-* チャットワークとかでloadsettingで失敗してる。具体的にはcallback関数の引数がundefinedになってる。
+* confluenceでprepare leap発動しない
 * 移動した時のキー入力でもとのページのキーショートカットを発動させないようにする
     * dummyのdom elementを作ってそこにフォーカスさせたら、発動しなくなるのでは？
     * これ実現できたらvimiumのキーバインドに縛られなくて良いのでは
