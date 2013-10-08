@@ -1,3 +1,4 @@
+var dummyInputElementId = "leaptab-dummy-element";
 var availableKeys = "";
 var prefixKeyEvent = "";
 var dummyFavIconUrl = "";
@@ -20,21 +21,19 @@ window.addEventListener("load", function(){
                     action : "prepareLeap"
                 });
                 lastActiveElement = document.activeElement;
-                document.getElementById("leaptab-dummy-element").focus();
-                beforeLeapFlag = true;
+                document.getElementById(dummyInputElementId).focus();
             }else if(isBeforeLeap() && isAvailableKey(evt.keyCode)){
                 chrome.runtime.sendMessage({
                     action : "leap",
                     code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
                 });
                 evt.stopPropagation();
-                beforeLeapFlag = false;
+                lastActiveElement.focus();
             } else if (isBeforeLeap() && evt.keyCode == 27){
                 chrome.runtime.sendMessage({
                     action : "reset"
                 });
                 lastActiveElement.focus();
-                beforeLeapFlag = false;
             }
         });
     });
@@ -75,7 +74,7 @@ function isAlphabet(code) {
 }
 
 function isBeforeLeap() {
-    return beforeLeapFlag;
+    return document.activeElement.id == dummyInputElementId;
 }
 
 function isPrefixEvent(evt) {
@@ -148,6 +147,7 @@ function setDummyElement() {
     dummyInput.style.top = "0px";
     dummyInput.style.left = "0px";
     dummyInput.style.opacity = "0";
-    dummyInput.id = "leaptab-dummy-element";
+    dummyInput.style.zIndex = "-100";
+    dummyInput.id = dummyInputElementId;
     document.body.appendChild(dummyInput);
 }
