@@ -21,6 +21,7 @@ window.addEventListener("load", function(){
             } else if (isBeforeLeap() && isAvailableKey(evt.keyCode)){
                 chrome.runtime.sendMessage({
                     action : "leap",
+                    // これもなんとかならんのか
                     code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
                 });
                 evt.stopPropagation();
