@@ -12,17 +12,13 @@ window.addEventListener("load", function(){
         setDummyElement();
 
         document.addEventListener("keydown", function(evt){
-            // bodyじゃなくてもここスルーするのバグぽい
-            // prepare leapした後2回esc押さないともとに戻らない
-            if (document.activeElement.tagName != "BODY" && ! prefixKeyEvent.ctrlKey && ! prefixKeyEvent.metaKey && ! prefixKeyEvent.altKey)  return;
-
-            if(! isBeforeLeap() && isPrefixEvent(evt)) {
+            if (! isBeforeLeap() && isPrefixEvent(evt)) {
                 chrome.runtime.sendMessage({
                     action : "prepareLeap"
                 });
                 lastActiveElement = document.activeElement;
                 document.getElementById(dummyInputElementId).focus();
-            }else if(isBeforeLeap() && isAvailableKey(evt.keyCode)){
+            } else if (isBeforeLeap() && isAvailableKey(evt.keyCode)){
                 chrome.runtime.sendMessage({
                     action : "leap",
                     code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
