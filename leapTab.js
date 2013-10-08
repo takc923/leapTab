@@ -25,12 +25,18 @@ window.addEventListener("load", function(){
                     code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
                 });
                 evt.stopPropagation();
-                lastActiveElement.focus();
+                setTimeout(function(){
+                    document.getElementById(dummyInputElementId).blur();
+                    lastActiveElement.focus();
+                }, 100);
             } else if (isBeforeLeap() && evt.keyCode == 27){
                 chrome.runtime.sendMessage({
                     action : "reset"
                 });
-                lastActiveElement.focus();
+                setTimeout(function(){
+                    document.getElementById(dummyInputElementId).blur();
+                    lastActiveElement.focus();
+                }, 100);
             }
         });
     });
