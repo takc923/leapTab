@@ -1,6 +1,6 @@
 var dummyInputElementId = "leaptab-dummy-element";
 var availableKeys = "";
-var prefixKeyEvent = "";
+var prefixKeyEvent = {};
 var dummyFavIconUrl = "";
 var lastActiveElement;
 
