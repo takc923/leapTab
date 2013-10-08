@@ -3,8 +3,6 @@ var availableKeys = "";
 var prefixKeyEvent = "";
 var dummyFavIconUrl = "";
 var lastActiveElement;
-// TODO: このフラグ使ってたら、prepareLeapしたあと、activeなタブを手動で変更した時flagがtrueのままfaviconが元に戻る。
-var beforeLeapFlag = false;
 
 window.addEventListener("load", function(){
     loadSettings(function(hasFavicon){
