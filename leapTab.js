@@ -6,6 +6,7 @@ var lastActiveElement;
 
 window.addEventListener("load", function(){
     loadSettings(function(hasFavicon){
+        // TODO: [origin]/favicon.ico にfaviconがある場合に対応する
         if (! hasFavicon) setDummyFavIcon();
         setDummyElement();
 
@@ -104,9 +105,10 @@ function changeLinkIfExists(iconUrl, isUndo) {
     // TODO: filterとかmapで書き換えられるよね
     for (var key in links) {
         if (links[key].rel != undefined && links[key].rel.search(/^\s*(shortcut\s+)?icon(\s+shortcut)?\s*$/i) != -1) {
+            // googleとかw3.orgが戻らない
             if (isUndo && links[key].lastHref != undefined) {
                 links[key].href = links[key].lastHref;
-            } else {
+            } else if (links[key].href == dummyFavIconUrl || links[key].href.search(/^chrome-extension:/) == -1) {
                 links[key].lastHref = links[key].href;
                 links[key].href = iconUrl;
             }
