@@ -1,10 +1,8 @@
 # README
 
 # TODO
-* confluenceでprepare leap発動しない
 * 移動した時のキー入力でもとのページのキーショートカットを発動させないようにする
-    * dummyのdom elementを作ってそこにフォーカスさせたら、発動しなくなるのでは？
-    * これ実現できたらvimiumのキーバインドに縛られなくて良いのでは
+    * chatworkで何故かまだ発動する
     * jquery.textcompleteはenterした時に改行しないのはどうしてか調べる
 * prefix keyのあとにprefix key or space keyで何かが起きるようにする
     * 直前のタブに移動 or 数が足りなかったときに足りない分のfaviconを変える
