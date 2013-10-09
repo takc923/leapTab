@@ -5,9 +5,8 @@ var dummyFavIconUrl = "";
 var lastActiveElement;
 
 window.addEventListener("load", function(){
-    loadSettings(function(hasFavicon){
-        // TODO: [origin]/favicon.ico にfaviconがある場合に対応する
-        if (! hasFavicon) setDummyFavIcon();
+    // ここinitialize的なものにして、 setDummyElementも中に入れちゃおうかな？
+    loadSettings(function(){
         setDummyElement();
 
         document.addEventListener("keydown", function(evt){
@@ -49,11 +48,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
-function setDummyFavIcon() {
+function setFavIconLink(favIconUrl) {
     var newLink = document.createElement("link");
     newLink.type = "image/x-icon";
     newLink.rel = "icon";
-    newLink.href = dummyFavIconUrl;
+    newLink.href = favIconUrl;
     document.head.appendChild(newLink);
 };
 
@@ -119,27 +118,26 @@ function changeLinkIfExists(iconUrl, isUndo) {
     return exists;
 }
 
-// flagのhasFaviconと名前かぶってるのきもい
+// TODO: 名前おかしい
 function hasFavicon(callback) {
     var links = document.head.getElementsByTagName("link");
     var iconLinks = [];
     // linksがnodelistのせいでfilterが使えなくなったからとりあえずこうしてるけど、リファクタリング出来ると思う
     for(var key in links) {
         if (links[key].rel != undefined
-            && links[key].rel.search(/^\s*(shortcut\s+)?icon(\s+shortcut)?\s*$/i) != -1)
-            // ここでcallback発動させてreturnでいいんじゃね
-            iconLinks.push(links[key]);
-    }
-
-    if (iconLinks.length != 0) {
-        callback(true);
-        return;
+            && links[key].rel.search(/^\s*(shortcut\s+)?icon(\s+shortcut)?\s*$/i) != -1) {
+            callback();
+            return;
+        }
     }
 
     var req = new XMLHttpRequest();
     req.open("GET", location.origin + "/favicon.ico");
-    req.onload = function(){callback(true);};
-    req.onerror = function(){callback(false);};
+    req.addEventListener("loadend", function(evt){
+        var is_success = evt.currentTarget.status == 200 && evt.currentTarget.response != "";
+        setFavIconLink(is_success ? location.origin + "/favicon.ico" : dummyFavIconUrl);
+        callback();
+    });
     req.send();
 }
 
