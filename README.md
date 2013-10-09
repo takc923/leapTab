@@ -7,6 +7,7 @@
     * jquery.textcompleteはenterした時に改行しないのはどうしてか調べる
 * prefix keyのあとにprefix key or space keyで何かが起きるようにする
     * 直前のタブに移動 or 数が足りなかったときに足りない分のfaviconを変える
+    * 現状prefix key二回連続でどうなるか調べる
 * option pageのvalidation
 * option pageをもっと分かりやすく。
 * ロケーションバーにいる時のイベントって拾えたっけ？拾えたらそこでも使えるようにしたい。その場合修飾キーありで。
