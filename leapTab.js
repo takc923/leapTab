@@ -11,7 +11,8 @@ window.addEventListener("load", function(){
         setDummyElement();
 
         document.addEventListener("keydown", function(evt){
-            if (! isBeforeLeap() && isPrefixEvent(evt)) {
+            if (! isBeforeLeap() && isPrefixEvent(evt)
+                && (doesPrefixEventHaveModifierKey() || document.activeElement.tagName == "BODY")) {
                 chrome.runtime.sendMessage({
                     action : "prepareLeap"
                 });
@@ -153,4 +154,11 @@ function setDummyElement() {
     dummyInput.style.zIndex = "-100";
     dummyInput.id = dummyInputElementId;
     document.body.appendChild(dummyInput);
+}
+
+function doesPrefixEventHaveModifierKey() {
+    return prefixKeyEvent.shiftKey
+    || prefixKeyEvent.ctrlKey
+    || prefixKeyEvent.metaKey
+    || prefixKeyEvent.altKey;
 }
