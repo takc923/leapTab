@@ -17,13 +17,9 @@ window.addEventListener("load", function(){
         });
 
         dummyElement.addEventListener("focus", function(evt){
-            if(isBeforeLeap()) {
-                dummyElement.blur();
-            } else {
-                chrome.runtime.sendMessage({
-                    action : "prepareLeap"
-                });
-            }
+            chrome.runtime.sendMessage({
+                action : "prepareLeap"
+            });
         });
 
         document.addEventListener("keydown", function(evt){
