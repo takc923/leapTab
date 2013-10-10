@@ -5,7 +5,6 @@ var dummyFavIconUrl = "";
 var lastActiveElement;
 
 window.addEventListener("load", function(){
-    // ここinitialize的なものにして、 setDummyElementも中に入れちゃおうかな？
     loadSettings(function(){
         setDummyElement();
         var dummyElement = document.getElementById(dummyInputElementId);
