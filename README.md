@@ -2,6 +2,7 @@
 
 # TODO
 * Escapeがきかなくなってる
+* optionページにも組み込む
 * dummy elementのonblurでreset的な
     * 一回図とか書いてちゃんと設計したほうがいい気がした
 * extra-confluenceでprepare leapが発動しないことがある。
