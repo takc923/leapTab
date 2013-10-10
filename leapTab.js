@@ -9,6 +9,12 @@ window.addEventListener("load", function(){
     loadSettings(function(){
         setDummyElement();
 
+        document.getElementById(dummyInputElementId).addEventListener("blur", function(evt){
+            chrome.runtime.sendMessage({
+                action : "reset"
+            });
+            lastActiveElement.focus();
+        });
         document.addEventListener("keydown", function(evt){
             if (! isBeforeLeap() && isPrefixEvent(evt)
                 && (doesPrefixEventHaveModifierKey() || document.activeElement.tagName == "BODY")) {
@@ -24,14 +30,6 @@ window.addEventListener("load", function(){
                     code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
                 });
                 evt.stopPropagation();
-                setTimeout(function(){
-                    document.getElementById(dummyInputElementId).blur();
-                    lastActiveElement.focus();
-                }, 100);
-            } else if (isBeforeLeap() && evt.keyCode == 27){
-                chrome.runtime.sendMessage({
-                    action : "reset"
-                });
                 setTimeout(function(){
                     document.getElementById(dummyInputElementId).blur();
                     lastActiveElement.focus();
