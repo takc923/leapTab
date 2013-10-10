@@ -23,7 +23,7 @@ window.addEventListener("load", function(){
                 });
                 lastActiveElement = document.activeElement;
                 document.getElementById(dummyInputElementId).focus();
-            } else if (isBeforeLeap() && isAvailableKey(evt.keyCode)){
+            } else if (isBeforeLeap() && isAvailableEvent(evt)){
                 chrome.runtime.sendMessage({
                     action : "leap",
                     // これもなんとかならんのか
@@ -65,8 +65,9 @@ function loadSettings(callback) {
     });
 }
 
-function isAvailableKey(code) {
-    return availableKeys.indexOf(String.fromCharCode(code)) != -1;
+function isAvailableEvent(evt) {
+    return availableKeys.indexOf(String.fromCharCode(evt.keyCode)) != -1
+    && ! evt.ctrlKey && ! evt.metaKey && ! evt.altKey;
 }
 
 function isAlphabet(code) {
