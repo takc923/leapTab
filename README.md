@@ -1,14 +1,6 @@
 # README
 
 # TODO
-* optionページにも組み込む
-* dummy elementのonblurでreset的な
-    * 一回図とか書いてちゃんと設計したほうがいい気がした
-* extra-confluenceでprepare leapが発動しないことがある。
-* 移動した時のキー入力でもとのページのキーショートカットを発動させないようにする
-    * chatworkで何故かまだ発動する。タブ移動は出来る？出来なかったら以前のバージョンで出来たから、それを調べる。
-        * `<input type="text" id="leaptab-dummy-element" style="position: fixed; top: 0px; left: 0px; opacity: 0;">`
-    * jquery.textcompleteはenterした時に改行しないのはどうしてか調べる
 * prefix keyのあとにprefix key or space keyで何かが起きるようにする
     * 直前のタブに移動 or 数が足りなかったときに足りない分のfaviconを変える
     * 現状prefix key二回連続でどうなるか調べる
