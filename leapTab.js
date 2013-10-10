@@ -13,6 +13,8 @@ window.addEventListener("load", function(){
             chrome.runtime.sendMessage({
                 action : "reset"
             });
+            // changing active tab trigger blur event, however it does NOT change activeElement.
+            dummyElement.blur();
             lastActiveElement.focus();
         });
 
