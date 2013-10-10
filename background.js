@@ -1,6 +1,8 @@
 var availableKeys = getAvailableKeys();
 var originalTabs = null;
 var dummyFavIconUrl = chrome.extension.getURL("favicon/dummy_favicon.png");
+var activeTabId;
+var lastTabId;
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -10,12 +12,17 @@ chrome.runtime.onMessage.addListener(
         case "reset"       : reset();                break;
         case "leap"        : leap(request.code);     break;
         case "getSettings" : result = getSettings(); break;
+        case "leapLastTab" : leapLastTab();          break;
         }
         sendResponse(result);
     }
 );
 
-chrome.tabs.onActivated.addListener(reset);
+chrome.tabs.onActivated.addListener(function(activeInfo){
+    reset();
+    lastTabId = activeTabId;
+    activeTabId = activeInfo.tabId;
+});
 
 function getSettings() {
     return {
@@ -91,4 +98,8 @@ function getPrefixKeyEvent() {
         metaKey  : localStorage["prefixModifierKey"] == "metaKey",
         altKey   : localStorage["prefixModifierKey"] == "altKey"
     };
+}
+
+function leapLastTab() {
+    chrome.tabs.update(lastTabId, {active: true});
 }
