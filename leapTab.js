@@ -25,16 +25,23 @@ window.addEventListener("load", function(){
         });
 
         document.addEventListener("keydown", function(evt){
-            if (! isBeforeLeap() && isPrefixEvent(evt)
-                && (doesPrefixEventHaveModifierKey() || document.activeElement.tagName == "BODY")) {
-                lastActiveElement = document.activeElement;
-                dummyElement.focus();
+            if (isPrefixEvent(evt) && (doesPrefixEventHaveModifierKey() || document.activeElement.tagName == "BODY")) {
+                if (! isBeforeLeap()) {
+                    lastActiveElement = document.activeElement;
+                    dummyElement.focus();
+                } else {
+                    chrome.runtime.sendMessage({
+                        action : "leapLastTab"
+                    });
+                }
+                // availableKeysからprefix keyを消す必要ある
             } else if (isBeforeLeap() && isAvailableEvent(evt)){
                 chrome.runtime.sendMessage({
                     action : "leap",
                     // これもなんとかならんのか
                     code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
                 });
+                // いらん
                 evt.stopPropagation();
                 setTimeout(function(){
                     dummyElement.blur();
