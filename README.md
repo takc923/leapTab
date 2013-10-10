@@ -1,6 +1,7 @@
 # README
 
 # TODO
+* Escapeがきかなくなってる
 * dummy elementのonblurでreset的な
     * 一回図とか書いてちゃんと設計したほうがいい気がした
 * extra-confluenceでprepare leapが発動しないことがある。
