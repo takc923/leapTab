@@ -8,21 +8,30 @@ window.addEventListener("load", function(){
     // ここinitialize的なものにして、 setDummyElementも中に入れちゃおうかな？
     loadSettings(function(){
         setDummyElement();
+        var dummyElement = document.getElementById(dummyInputElementId);
 
-        document.getElementById(dummyInputElementId).addEventListener("blur", function(evt){
+        dummyElement.addEventListener("blur", function(evt){
             chrome.runtime.sendMessage({
                 action : "reset"
             });
             lastActiveElement.focus();
         });
-        document.addEventListener("keydown", function(evt){
-            if (! isBeforeLeap() && isPrefixEvent(evt)
-                && (doesPrefixEventHaveModifierKey() || document.activeElement.tagName == "BODY")) {
+
+        dummyElement.addEventListener("focus", function(evt){
+            if(isBeforeLeap()) {
+                dummyElement.blur();
+            } else {
                 chrome.runtime.sendMessage({
                     action : "prepareLeap"
                 });
+            }
+        });
+
+        document.addEventListener("keydown", function(evt){
+            if (! isBeforeLeap() && isPrefixEvent(evt)
+                && (doesPrefixEventHaveModifierKey() || document.activeElement.tagName == "BODY")) {
                 lastActiveElement = document.activeElement;
-                document.getElementById(dummyInputElementId).focus();
+                dummyElement.focus();
             } else if (isBeforeLeap() && isAvailableEvent(evt)){
                 chrome.runtime.sendMessage({
                     action : "leap",
@@ -31,8 +40,7 @@ window.addEventListener("load", function(){
                 });
                 evt.stopPropagation();
                 setTimeout(function(){
-                    document.getElementById(dummyInputElementId).blur();
-                    lastActiveElement.focus();
+                    dummyElement.blur();
                 }, 100);
             }
         });
@@ -104,7 +112,6 @@ function changeLinkIfExists(iconUrl, isUndo) {
     // TODO: filterとかmapで書き換えられるよね
     for (var key in links) {
         if (links[key].rel != undefined && links[key].rel.search(/^\s*(shortcut\s+)?icon(\s+shortcut)?\s*$/i) != -1) {
-            // googleとかw3.orgが戻らない
             if (isUndo && links[key].lastHref != undefined) {
                 links[key].href = links[key].lastHref;
             } else if (links[key].href == dummyFavIconUrl || links[key].href.search(/^chrome-extension:/) == -1) {
