@@ -40,8 +40,6 @@ window.addEventListener("load", function(){
                     // これもなんとかならんのか
                     code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
                 });
-                // いらん
-                evt.stopPropagation();
                 setTimeout(function(){
                     dummyElement.blur();
                 }, 100);
