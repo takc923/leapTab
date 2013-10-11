@@ -25,15 +25,14 @@ window.addEventListener("load", function(){
         });
 
         document.addEventListener("keydown", function(evt){
-            if (isPrefixEvent(evt) && (doesPrefixEventHaveModifierKey() || document.activeElement.tagName == "BODY")) {
-                if (! isBeforeLeap()) {
-                    lastActiveElement = document.activeElement;
-                    dummyElement.focus();
-                } else {
-                    chrome.runtime.sendMessage({
-                        action : "leapLastTab"
-                    });
-                }
+            if (isPrefixEvent(evt) && ! isBeforeLeap()
+               && (doesPrefixEventHaveModifierKey() || document.activeElement.tagName == "BODY")) {
+                lastActiveElement = document.activeElement;
+                dummyElement.focus();
+            } else if (isPrefixEvent(evt) && isBeforeLeap()) {
+                chrome.runtime.sendMessage({
+                    action : "leapLastTab"
+                });
                 // availableKeysからprefix keyを消す必要ある
             } else if (isBeforeLeap() && isAvailableEvent(evt)){
                 chrome.runtime.sendMessage({
@@ -165,8 +164,7 @@ function setDummyElement() {
 }
 
 function doesPrefixEventHaveModifierKey() {
-    return prefixKeyEvent.shiftKey
-    || prefixKeyEvent.ctrlKey
+    return prefixKeyEvent.ctrlKey
     || prefixKeyEvent.metaKey
     || prefixKeyEvent.altKey;
 }

@@ -80,6 +80,8 @@ function getAlphanumericImageUrl(character) {
 
 function getAvailableKeys() {
     var unavailableKeys = localStorage["unbindKeys"] || "";
+    if (! doesPrefixEventHaveModifierKey())
+        unavailableKeys += localStorage["prefixKey"];
     var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var availableKeys = "";
     for (var i = 0; i < alphanumeric.length; i++) {
@@ -102,4 +104,12 @@ function getPrefixKeyEvent() {
 
 function leapLastTab() {
     chrome.tabs.update(lastTabId, {active: true});
+}
+
+// 同じコードはファイル切り出してbackgroundとfrontendでどっちも読みこめばいいのでは
+function doesPrefixEventHaveModifierKey() {
+    var prefixKeyEvent = getPrefixKeyEvent();
+    return prefixKeyEvent.ctrlKey
+    || prefixKeyEvent.metaKey
+    || prefixKeyEvent.altKey;
 }
