@@ -117,13 +117,13 @@ function changeLinkIfExists(iconUrl, isUndo) {
     var faviconLinks = document.head.querySelectorAll("link[rel~=icon]");
     var exists = false;
 
-    for (var key in faviconLinks) {
+    for (var i = 0; i < faviconLinks.length; i++) {
         // TODO: lastHrefをちゃんと定義できるattrにする的な
-        if (isUndo && faviconLinks[key].lastHref != undefined) {
-            faviconLinks[key].href = faviconLinks[key].lastHref;
-        } else if (faviconLinks[key].href == dummyFavIconUrl || faviconLinks[key].href.search(/^chrome-extension:/) == -1) {
-            faviconLinks[key].lastHref = faviconLinks[key].href;
-            faviconLinks[key].href = iconUrl;
+        if (isUndo && faviconLinks[i].lastHref != undefined) {
+            faviconLinks[i].href = faviconLinks[i].lastHref;
+        } else if (faviconLinks[i].href == dummyFavIconUrl || faviconLinks[i].href.search(/^chrome-extension:/) == -1) {
+            faviconLinks[i].lastHref = faviconLinks[i].href;
+            faviconLinks[i].href = iconUrl;
         }
         exists = true;
     }
