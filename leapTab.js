@@ -105,6 +105,7 @@ function changeFavicon(iconUrl, isUndo) {
     document.head.appendChild(newLink);
 }
 
+// changeFaviconとの違いが名前からわかりづらすぎる
 function changeLinkIfExists(iconUrl, isUndo) {
     var faviconLinks = document.head.querySelectorAll("link[rel~=icon]");
     var exists = false;
