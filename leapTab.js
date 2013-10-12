@@ -106,34 +106,27 @@ function changeFavicon(iconUrl, isUndo) {
 }
 
 function changeLinkIfExists(iconUrl, isUndo) {
-    var links = document.head.getElementsByTagName("link");
+    var faviconLinks = document.head.querySelectorAll("link[rel~=icon]");
     var exists = false;
-    // TODO: filterとかmapで書き換えられるよね
-    for (var key in links) {
-        if (links[key].rel != undefined && links[key].rel.search(/^\s*(shortcut\s+)?icon(\s+shortcut)?\s*$/i) != -1) {
-            if (isUndo && links[key].lastHref != undefined) {
-                links[key].href = links[key].lastHref;
-            } else if (links[key].href == dummyFavIconUrl || links[key].href.search(/^chrome-extension:/) == -1) {
-                links[key].lastHref = links[key].href;
-                links[key].href = iconUrl;
-            }
-            exists = true;
+
+    for (var key in faviconLinks) {
+        // TODO: lastHrefをちゃんと定義できるattrにする的な
+        if (isUndo && faviconLinks[key].lastHref != undefined) {
+            faviconLinks[key].href = faviconLinks[key].lastHref;
+        } else if (faviconLinks[key].href == dummyFavIconUrl || faviconLinks[key].href.search(/^chrome-extension:/) == -1) {
+            faviconLinks[key].lastHref = faviconLinks[key].href;
+            faviconLinks[key].href = iconUrl;
         }
+        exists = true;
     }
     return exists;
 }
 
 // TODO: 名前おかしい
 function hasFavicon(callback) {
-    var links = document.head.getElementsByTagName("link");
-    var iconLinks = [];
-    // linksがnodelistのせいでfilterが使えなくなったからとりあえずこうしてるけど、リファクタリング出来ると思う
-    for(var key in links) {
-        if (links[key].rel != undefined
-            && links[key].rel.search(/^\s*(shortcut\s+)?icon(\s+shortcut)?\s*$/i) != -1) {
-            callback();
-            return;
-        }
+    if (document.head.querySelectorAll("link[rel~=icon]").length > 0) {
+        callback();
+        return;
     }
 
     var req = new XMLHttpRequest();
