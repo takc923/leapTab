@@ -5,8 +5,7 @@ var dummyFavIconUrl = "";
 var lastActiveElement;
 
 window.addEventListener("load", function(){
-    loadSettings(function(){
-        setDummyElement();
+    initialize(function(){
         var dummyElement = document.getElementById(dummyInputElementId);
 
         dummyElement.addEventListener("blur", function(evt){
@@ -49,10 +48,18 @@ window.addEventListener("load", function(){
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     switch (request.action) {
+        // indentなんとかする
     case "changeFavicon" : changeFavicon(request.favIconUrl, request.isUndo); break;
     case "reloadSettings"       : loadSettings();       break;
     }
 });
+
+function initialize(callback) {
+    loadSettings(function() {
+        setDummyElement();
+        setIconLinkIfNotExists(callback);
+    });
+}
 
 function setFavIconLink(favIconUrl) {
     var newLink = document.createElement("link");
@@ -69,7 +76,7 @@ function loadSettings(callback) {
         availableKeys = response.availableKeys;
         prefixKeyEvent = response.prefixKeyEvent;
         dummyFavIconUrl = response.dummyFavIconUrl;
-        hasFavicon(callback);
+        callback();
     });
 }
 
@@ -123,8 +130,8 @@ function changeLinkIfExists(iconUrl, isUndo) {
     return exists;
 }
 
-// TODO: 名前おかしい
-function hasFavicon(callback) {
+// if logicを他のところに移したらもっとシンプルになるのでは
+function setIconLinkIfNotExists(callback) {
     if (document.head.querySelectorAll("link[rel~=icon]").length > 0) {
         callback();
         return;
