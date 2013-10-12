@@ -36,7 +36,7 @@ function prepareLeap() {
     chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
         originalTabs = {};
         for (var i = 0; i < availableKeys.length && i < tabs.length; i++) {
-            changeFavicon(tabs[i].id, getAlphanumericImageUrl(availableKeys[i]));
+            triggerChangeFavicon(tabs[i].id, getAlphanumericImageUrl(availableKeys[i]));
             originalTabs[availableKeys[i]] = tabs[i];
         }
     });
@@ -48,7 +48,7 @@ function reset() {
         if (! originalTabs[i].favIconUrl || originalTabs[i].favIconUrl.search(/^chrome-extension.*ico$/) == 0) {
             originalTabs[i].favIconUrl = null;
         }
-        changeFavicon(originalTabs[i].id, originalTabs[i].favIconUrl || dummyFavIconUrl, true);
+        triggerChangeFavicon(originalTabs[i].id, originalTabs[i].favIconUrl || dummyFavIconUrl, true);
     }
     originalTabs = null;
 }
@@ -58,9 +58,9 @@ function leap(code) {
     chrome.tabs.update(originalTabs[String.fromCharCode(code)].id, {active: true});
 }
 
-function changeFavicon(tabId, favIconUrl, isUndo) {
+function triggerChangeFavicon(tabId, favIconUrl, isUndo) {
     chrome.tabs.sendMessage(tabId, {
-        action    : "change",
+        action    : "changeFavicon",
         favIconUrl: favIconUrl,
         isUndo: isUndo
     });

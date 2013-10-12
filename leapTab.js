@@ -33,7 +33,6 @@ window.addEventListener("load", function(){
                 chrome.runtime.sendMessage({
                     action : "leapLastTab"
                 });
-                // availableKeysからprefix keyを消す必要ある
             } else if (isBeforeLeap() && isAvailableEvent(evt)){
                 chrome.runtime.sendMessage({
                     action : "leap",
@@ -50,7 +49,7 @@ window.addEventListener("load", function(){
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     switch (request.action) {
-    case "change" : change(request.favIconUrl, request.isUndo); break;
+    case "changeFavicon" : changeFavicon(request.favIconUrl, request.isUndo); break;
     case "reloadSettings"       : loadSettings();       break;
     }
 });
@@ -95,9 +94,8 @@ function isPrefixEvent(evt) {
         && evt.keyCode == prefixKeyEvent.keyCode;
 }
 
-// TODO: 名前変えろ
 // TODO: isUndoってどうなん、あとsetDummyなんとかとかぶってる。resetするならreset用に作ったほうがいいのでは
-function change(iconUrl, isUndo) {
+function changeFavicon(iconUrl, isUndo) {
     if (changeLinkIfExists(iconUrl, isUndo)) return;
 
     var newLink = document.createElement("link");
