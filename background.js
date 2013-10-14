@@ -9,7 +9,7 @@ chrome.runtime.onMessage.addListener(
         var result = {};
         switch (request.action) {
         case "prepareLeap" : prepareLeap();          break;
-        case "reset"       : reset();                break;
+        case "reset"       : resetFavicon();         break;
         case "leap"        : leap(request.code);     break;
         case "getSettings" : result = getSettings(); break;
         case "leapLastTab" : leapLastTab();          break;
@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener(
 );
 
 chrome.tabs.onActivated.addListener(function(activeInfo){
-    reset();
+    resetFavicon();
     lastTabId = activeTabId;
     activeTabId = activeInfo.tabId;
 });
@@ -42,19 +42,19 @@ function prepareLeap() {
     });
 }
 
-function reset() {
+function resetFavicon() {
     if (! originalTabs) return;
     for (var i in originalTabs) {
         if (! originalTabs[i].favIconUrl || originalTabs[i].favIconUrl.search(/^chrome-extension.*ico$/) == 0) {
             originalTabs[i].favIconUrl = null;
         }
-        triggerChangeFavicon(originalTabs[i].id, originalTabs[i].favIconUrl || dummyFavIconUrl, true);
+        triggerResetFavicon(originalTabs[i].id);
     }
     originalTabs = null;
 }
 
 function leap(code) {
-    if (availableKeys.indexOf(String.fromCharCode(code)) >= originalTabs.length) reset();
+    if (availableKeys.indexOf(String.fromCharCode(code)) >= originalTabs.length) resetFavicon();
     chrome.tabs.update(originalTabs[String.fromCharCode(code)].id, {active: true});
 }
 
@@ -63,6 +63,13 @@ function triggerChangeFavicon(tabId, favIconUrl, isUndo) {
         action    : "changeFavicon",
         favIconUrl: favIconUrl,
         isUndo: isUndo
+    });
+}
+
+// message送る系をfunction化したい
+function triggerResetFavicon(tabId) {
+    chrome.tabs.sendMessage(tabId, {
+        action    : "resetFavicon"
     });
 }
 
