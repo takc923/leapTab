@@ -12,4 +12,3 @@
 # OTHERS
 * favicon提供元
     * 株式会社テトラクローマ http://tetrachroma.co.jp/blog/130820_dl_favicon/
-* favicon.min.js https://github.com/Dlom/favicon.js
