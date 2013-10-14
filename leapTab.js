@@ -50,6 +50,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     switch (request.action) {
         // indentなんとかする
     case "changeFavicon" : changeFavicon(request.favIconUrl, request.isUndo); break;
+    case "resetFavicon" : resetFavicon(); break;
     case "reloadSettings"       : loadSettings();       break;
     }
 });
@@ -112,19 +113,25 @@ function changeFavicon(iconUrl, isUndo) {
     document.head.appendChild(newLink);
 }
 
-// changeFaviconとの違いが名前からわかりづらすぎる
-function changeLinkIfExists(iconUrl, isUndo) {
-    var faviconLinks = document.head.querySelectorAll("link[rel~=icon]");
+function resetFavicon(iconUrl, isUndo) {
+    var faviconLinks = document.head.querySelectorAll("link[rel~=icon][data-last-href]");
     var exists = false;
 
     for (var i = 0; i < faviconLinks.length; i++) {
-        // TODO: lastHrefをちゃんと定義できるattrにする的な
-        if (isUndo && faviconLinks[i].lastHref != undefined) {
-            faviconLinks[i].href = faviconLinks[i].lastHref;
-        } else if (faviconLinks[i].href == dummyFavIconUrl || faviconLinks[i].href.search(/^chrome-extension:/) == -1) {
-            faviconLinks[i].lastHref = faviconLinks[i].href;
-            faviconLinks[i].href = iconUrl;
-        }
+        faviconLinks[i].href = faviconLinks[i].dataset.lastHref;
+        exists = true;
+    }
+    return exists;
+}
+
+// changeFaviconとの違いが名前からわかりづらすぎる
+function changeLinkIfExists(iconUrl, isUndo) {
+    var faviconLinks = document.head.querySelectorAll("link[rel~=icon][href='" + dummyFavIconUrl + "'], link[rel~=icon]:not([href^=chrome-extension])");
+    var exists = false;
+
+    for (var i = 0; i < faviconLinks.length; i++) {
+        faviconLinks[i].dataset.lastHref = faviconLinks[i].href;
+        faviconLinks[i].href = iconUrl;
         exists = true;
     }
     return exists;
