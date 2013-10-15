@@ -1,10 +1,12 @@
 var availableKeys = getAvailableKeys();
+// originalTabsの構造とか残しておきたい。
 var originalTabs = null;
 var dummyFavIconUrl = chrome.extension.getURL("favicon/dummy_favicon.png");
 // tab history的なものにまとめたい
 var activeTabId;
 var lastTabId;
 
+// connect使えないか
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         var result = {};
@@ -36,6 +38,7 @@ function getSettings() {
 function prepareLeap() {
     chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
         originalTabs = {};
+        // availableKeysを配列にしたらもっと綺麗に書けるのでは
         for (var i = 0; i < availableKeys.length && i < tabs.length; i++) {
             triggerChangeFavicon(tabs[i].id, getAlphanumericImageUrl(availableKeys[i]));
             originalTabs[availableKeys[i]] = tabs[i];
