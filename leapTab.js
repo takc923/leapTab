@@ -48,10 +48,9 @@ window.addEventListener("load", function(){
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     switch (request.action) {
-        // indentなんとかする
-    case "changeFavicon" : changeFavicon(request.favIconUrl, request.isUndo); break;
-    case "resetFavicon" : resetFavicon(); break;
-    case "reloadSettings"       : loadSettings();       break;
+    case "changeFavicon"  : changeFavicon(request.favIconUrl); break;
+    case "resetFavicon"   : resetFavicon();                    break;
+    case "reloadSettings" : loadSettings();                    break;
     }
 });
 
@@ -102,9 +101,8 @@ function isPrefixEvent(evt) {
         && evt.keyCode == prefixKeyEvent.keyCode;
 }
 
-// TODO: isUndoってどうなん、あとsetDummyなんとかとかぶってる。resetするならreset用に作ったほうがいいのでは
-function changeFavicon(iconUrl, isUndo) {
-    if (changeLinkIfExists(iconUrl, isUndo)) return;
+function changeFavicon(iconUrl) {
+    if (changeLinkIfExists(iconUrl)) return;
 
     var newLink = document.createElement("link");
     newLink.type = "image/x-icon";
@@ -113,7 +111,7 @@ function changeFavicon(iconUrl, isUndo) {
     document.head.appendChild(newLink);
 }
 
-function resetFavicon(iconUrl, isUndo) {
+function resetFavicon(iconUrl) {
     var faviconLinks = document.head.querySelectorAll("link[rel~=icon][data-last-href]");
     var exists = false;
 
@@ -125,8 +123,9 @@ function resetFavicon(iconUrl, isUndo) {
 }
 
 // changeFaviconとの違いが名前からわかりづらすぎる
-function changeLinkIfExists(iconUrl, isUndo) {
-    var faviconLinks = document.head.querySelectorAll("link[rel~=icon][href='" + dummyFavIconUrl + "'], link[rel~=icon]:not([href^=chrome-extension])");
+function changeLinkIfExists(iconUrl) {
+    var query = "link[rel~=icon][href='" + dummyFavIconUrl + "'], link[rel~=icon]:not([href^=chrome-extension])";
+    var faviconLinks = document.head.querySelectorAll(query);
     var exists = false;
 
     for (var i = 0; i < faviconLinks.length; i++) {
@@ -154,7 +153,6 @@ function setIconLinkIfNotExists(callback) {
     req.send();
 }
 
-// dummy elementにフォーカスしてるかどうかでprepare leapかどうかを判定できる
 function setDummyElement() {
     var dummyInput = document.createElement("input");
     dummyInput.type = "text";
