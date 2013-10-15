@@ -58,11 +58,10 @@ function leap(code) {
     chrome.tabs.update(originalTabs[String.fromCharCode(code)].id, {active: true});
 }
 
-function triggerChangeFavicon(tabId, favIconUrl, isUndo) {
+function triggerChangeFavicon(tabId, favIconUrl) {
     chrome.tabs.sendMessage(tabId, {
         action    : "changeFavicon",
-        favIconUrl: favIconUrl,
-        isUndo: isUndo
+        favIconUrl: favIconUrl
     });
 }
 
