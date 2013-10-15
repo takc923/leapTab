@@ -1,6 +1,7 @@
 var availableKeys = getAvailableKeys();
 var originalTabs = null;
 var dummyFavIconUrl = chrome.extension.getURL("favicon/dummy_favicon.png");
+// tab history的なものにまとめたい
 var activeTabId;
 var lastTabId;
 
@@ -44,10 +45,8 @@ function prepareLeap() {
 
 function resetFavicon() {
     if (! originalTabs) return;
+    // 全てのタブにやるのはどうなんだろう。どこかのタイミングでresetするべきかどうか判定するべきでは
     for (var i in originalTabs) {
-        if (! originalTabs[i].favIconUrl || originalTabs[i].favIconUrl.search(/^chrome-extension.*ico$/) == 0) {
-            originalTabs[i].favIconUrl = null;
-        }
         triggerResetFavicon(originalTabs[i].id);
     }
     originalTabs = null;
