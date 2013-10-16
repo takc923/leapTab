@@ -9,61 +9,63 @@ var lastTabId;
 // connect使えないか
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        var result = {};
-        switch (request.action) {
-        case "prepareLeap" : prepareLeap();          break;
-        case "reset"       : resetFavicon();         break;
-        case "leap"        : leap(request.code);     break;
-        case "getSettings" : result = getSettings(); break;
-        case "leapLastTab" : leapLastTab();          break;
-        }
+        var result = onMsgFuncContainer[request.action](request.args);
         sendResponse(result);
     }
 );
 
+var onMsgFuncContainer = {
+    prepareLeap: function () {
+        chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
+            originalTabs = {};
+            // availableKeysを配列にしたらもっと綺麗に書けるのでは
+            for (var i = 0; i < availableKeys.length && i < tabs.length; i++) {
+                triggerChangeFavicon(tabs[i].id, getAlphanumericImageUrl(availableKeys[i]));
+                originalTabs[availableKeys[i]] = tabs[i];
+            }
+        });
+    },
+
+    resetFaviconAll: function () {
+        if (! originalTabs) return;
+        // 全てのタブにやるのはどうなんだろう。どこかのタイミングでresetするべきかどうか判定するべきでは
+        for (var i in originalTabs) {
+            triggerResetFavicon(originalTabs[i].id);
+        }
+        originalTabs = null;
+    },
+
+    leap: function (args) {
+        var code = args.code;
+        if (availableKeys.indexOf(String.fromCharCode(code)) >= originalTabs.length) this.resetFaviconAll();
+        chrome.tabs.update(originalTabs[String.fromCharCode(code)].id, {active: true});
+    },
+
+    getSettings: function () {
+        return {
+            availableKeys: availableKeys,
+            prefixKeyEvent: getPrefixKeyEvent(),
+            dummyFavIconUrl: dummyFavIconUrl
+        };
+    },
+
+    leapLastTab: function () {
+        chrome.tabs.update(lastTabId, {active: true});
+    }
+};
+
 chrome.tabs.onActivated.addListener(function(activeInfo){
-    resetFavicon();
     lastTabId = activeTabId;
     activeTabId = activeInfo.tabId;
 });
 
-function getSettings() {
-    return {
-        availableKeys: availableKeys,
-        prefixKeyEvent: getPrefixKeyEvent(),
-        dummyFavIconUrl: dummyFavIconUrl
-    };
-}
 
-function prepareLeap() {
-    chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
-        originalTabs = {};
-        // availableKeysを配列にしたらもっと綺麗に書けるのでは
-        for (var i = 0; i < availableKeys.length && i < tabs.length; i++) {
-            triggerChangeFavicon(tabs[i].id, getAlphanumericImageUrl(availableKeys[i]));
-            originalTabs[availableKeys[i]] = tabs[i];
-        }
-    });
-}
 
-function resetFavicon() {
-    if (! originalTabs) return;
-    // 全てのタブにやるのはどうなんだろう。どこかのタイミングでresetするべきかどうか判定するべきでは
-    for (var i in originalTabs) {
-        triggerResetFavicon(originalTabs[i].id);
-    }
-    originalTabs = null;
-}
-
-function leap(code) {
-    if (availableKeys.indexOf(String.fromCharCode(code)) >= originalTabs.length) resetFavicon();
-    chrome.tabs.update(originalTabs[String.fromCharCode(code)].id, {active: true});
-}
 
 function triggerChangeFavicon(tabId, favIconUrl) {
     chrome.tabs.sendMessage(tabId, {
         action    : "changeFavicon",
-        favIconUrl: favIconUrl
+        args: {favIconUrl: favIconUrl}
     });
 }
 
@@ -110,9 +112,6 @@ function getPrefixKeyEvent() {
     };
 }
 
-function leapLastTab() {
-    chrome.tabs.update(lastTabId, {active: true});
-}
 
 // 同じコードはファイル切り出してbackgroundとfrontendでどっちも読みこめばいいのでは
 function doesPrefixEventHaveModifierKey() {
