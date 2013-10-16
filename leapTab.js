@@ -102,28 +102,6 @@ function isPrefixEvent(evt) {
 }
 
 function changeFavicon(iconUrl) {
-    if (changeLinkIfExists(iconUrl)) return;
-
-    var newLink = document.createElement("link");
-    newLink.type = "image/x-icon";
-    newLink.rel = "icon";
-    newLink.href = iconUrl;
-    document.head.appendChild(newLink);
-}
-
-function resetFavicon(iconUrl) {
-    var faviconLinks = document.head.querySelectorAll("link[rel~=icon][data-last-href]");
-    var exists = false;
-
-    for (var i = 0; i < faviconLinks.length; i++) {
-        faviconLinks[i].href = faviconLinks[i].dataset.lastHref;
-        exists = true;
-    }
-    return exists;
-}
-
-// changeFaviconとの違いが名前からわかりづらすぎる
-function changeLinkIfExists(iconUrl) {
     var query = "link[rel~=icon][href='" + dummyFavIconUrl + "'], link[rel~=icon]:not([href^=chrome-extension])";
     var faviconLinks = document.head.querySelectorAll(query);
     var exists = false;
@@ -131,6 +109,17 @@ function changeLinkIfExists(iconUrl) {
     for (var i = 0; i < faviconLinks.length; i++) {
         faviconLinks[i].dataset.lastHref = faviconLinks[i].href;
         faviconLinks[i].href = iconUrl;
+        exists = true;
+    }
+    return exists;
+ }
+
+function resetFavicon(iconUrl) {
+    var faviconLinks = document.head.querySelectorAll("link[rel~=icon][data-last-href]");
+    var exists = false;
+
+    for (var i = 0; i < faviconLinks.length; i++) {
+        faviconLinks[i].href = faviconLinks[i].dataset.lastHref;
         exists = true;
     }
     return exists;
