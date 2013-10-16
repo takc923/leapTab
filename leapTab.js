@@ -10,7 +10,7 @@ window.addEventListener("load", function(){
 
         dummyElement.addEventListener("blur", function(evt){
             chrome.runtime.sendMessage({
-                action : "reset"
+                action : "resetFaviconAll"
             });
             // changing active tab trigger blur event, however it does NOT change activeElement.
             dummyElement.blur();
@@ -36,7 +36,9 @@ window.addEventListener("load", function(){
                 chrome.runtime.sendMessage({
                     action : "leap",
                     // これもなんとかならんのか
-                    code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
+                    args: {
+                        code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
+                    }
                 });
                 setTimeout(function(){
                     dummyElement.blur();
@@ -47,12 +49,36 @@ window.addEventListener("load", function(){
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    switch (request.action) {
-    case "changeFavicon"  : changeFavicon(request.favIconUrl); break;
-    case "resetFavicon"   : resetFavicon();                    break;
-    case "reloadSettings" : loadSettings();                    break;
-    }
+    onMsgFuncContainer[request.action](request.args);
 });
+
+var onMsgFuncContainer = {
+    changeFavicon: function (args) {
+        var favIconUrl = args.favIconUrl;
+        var query = "link[rel~=icon][href='" + dummyFavIconUrl + "'], link[rel~=icon]:not([href^=chrome-extension])";
+        var faviconLinks = document.head.querySelectorAll(query);
+        var exists = false;
+
+        for (var i = 0; i < faviconLinks.length; i++) {
+            faviconLinks[i].dataset.lastHref = faviconLinks[i].href;
+            faviconLinks[i].href = favIconUrl;
+            exists = true;
+        }
+        return exists;
+    },
+    resetFavicon: function (iconUrl) {
+        var faviconLinks = document.head.querySelectorAll("link[rel~=icon][data-last-href]");
+        var exists = false;
+
+        for (var i = 0; i < faviconLinks.length; i++) {
+            faviconLinks[i].href = faviconLinks[i].dataset.lastHref;
+            exists = true;
+        }
+        return exists;
+    },
+    // 何回もぴんぽんしなくてもsettings dataを直接受け取れば良いのでは
+    reloadSettings: loadSettings
+}
 
 function initialize(callback) {
     loadSettings(function() {
@@ -76,7 +102,7 @@ function loadSettings(callback) {
         availableKeys = response.availableKeys;
         prefixKeyEvent = response.prefixKeyEvent;
         dummyFavIconUrl = response.dummyFavIconUrl;
-        callback();
+        callback && callback();
     });
 }
 
@@ -99,30 +125,6 @@ function isPrefixEvent(evt) {
         && evt.metaKey == prefixKeyEvent.metaKey
         && evt.altKey == prefixKeyEvent.altKey
         && evt.keyCode == prefixKeyEvent.keyCode;
-}
-
-function changeFavicon(iconUrl) {
-    var query = "link[rel~=icon][href='" + dummyFavIconUrl + "'], link[rel~=icon]:not([href^=chrome-extension])";
-    var faviconLinks = document.head.querySelectorAll(query);
-    var exists = false;
-
-    for (var i = 0; i < faviconLinks.length; i++) {
-        faviconLinks[i].dataset.lastHref = faviconLinks[i].href;
-        faviconLinks[i].href = iconUrl;
-        exists = true;
-    }
-    return exists;
- }
-
-function resetFavicon(iconUrl) {
-    var faviconLinks = document.head.querySelectorAll("link[rel~=icon][data-last-href]");
-    var exists = false;
-
-    for (var i = 0; i < faviconLinks.length; i++) {
-        faviconLinks[i].href = faviconLinks[i].dataset.lastHref;
-        exists = true;
-    }
-    return exists;
 }
 
 // if logicを他のところに移したらもっとシンプルになるのでは
