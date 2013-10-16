@@ -1,7 +1,10 @@
 # README
 
 # TODO
+* option pageからleap出来ない
+    * この機能disableでもいいけど
 * http://www.getproxy.jp/ でうまくいかない
+    * chrome APIでfaviconのあるなし判断するべきだった
 * ロード中のページがある時にプリフィックスキー押した時にばぐらないようにする
 * 一気に多数のページをロードした時に、初期化がうまくいかない場合があるっぽい
 * option pageのvalidation
