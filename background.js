@@ -9,12 +9,12 @@ var lastTabId;
 // connect使えないか
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        var result = onMsgFuncContainer[request.action](request.args);
+        var result = onMsgFuncDispatcher[request.action](request.args);
         sendResponse(result);
     }
 );
 
-var onMsgFuncContainer = {
+var onMsgFuncDispatcher = {
     prepareLeap: function () {
         chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
             originalTabs = {};
