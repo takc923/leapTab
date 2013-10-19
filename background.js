@@ -1,3 +1,4 @@
+var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var availableKeys = getAvailableKeys();
 // originalTabsの構造とか残しておきたい。
 var originalTabs = null;
@@ -92,7 +93,6 @@ function getAvailableKeys() {
     var unavailableKeys = localStorage["unbindKeys"] || "";
     if (! doesPrefixEventHaveModifierKey())
         unavailableKeys += localStorage["prefixKey"];
-    var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var availableKeys = "";
     for (var i = 0; i < alphanumeric.length; i++) {
         if (unavailableKeys.indexOf(alphanumeric[i]) == -1) {
