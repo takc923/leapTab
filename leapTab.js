@@ -140,7 +140,9 @@ function setIconLinkIfNotExists(callback) {
     var req = new XMLHttpRequest();
     req.open("GET", location.origin + "/favicon.ico");
     req.addEventListener("loadend", function(evt){
-        var is_success = evt.currentTarget.status == 200 && evt.currentTarget.response != "";
+        var is_success = this.status == 200
+                && this.getResponseHeader("Content-Length") != 0
+                && this.getResponseHeader("Content-Type").search(/^image/) != -1;
         setFavIconLink(is_success ? location.origin + "/favicon.ico" : dummyFavIconUrl);
         callback();
     });
