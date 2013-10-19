@@ -3,8 +3,6 @@
 # TODO
 * 一気に多数のページをロードした時に、初期化がうまくいかない場合があるっぽい
     * chrome自体再起動したら再現しやすそう
-* option pageのvalidation
-* option pageをもっと分かりやすく。
 * これ書く
 * connect的なの使って何とかならないものかしら
 * manifest.jsonのupdateと書式合わせたい
