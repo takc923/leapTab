@@ -126,7 +126,6 @@ function isPrefixEvent(evt) {
         && evt.keyCode == prefixKeyEvent.keyCode;
 }
 
-// if logicを他のところに移したらもっとシンプルになるのでは
 function setIconLinkIfNotExists(callback) {
     if (document.head.querySelectorAll("link[rel~=icon]").length > 0) {
         callback();
