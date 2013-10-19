@@ -1,6 +1,7 @@
 # README
 
 # TODO
+* chrome.storage使ってlocalStorageのところ書き換える
 * 一気に多数のページをロードした時に、初期化がうまくいかない場合があるっぽい
     * chrome自体再起動したら再現しやすそう
 * これ書く
