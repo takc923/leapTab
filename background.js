@@ -17,7 +17,12 @@ var onMsgFuncDispatcher = {
         chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
             originalTabs = {};
             for (var i = 0; i < availableKeys.length && i < tabs.length; i++) {
-                triggerChangeFavicon(tabs[i].id, getAlphanumericImageUrl(availableKeys[i]));
+                chrome.tabs.sendMessage(tabs[i].id,{
+                    action: "changeFavicon",
+                    args  : {
+                        favIconUrl: getAlphanumericImageUrl(availableKeys[i])
+                    }
+                });
                 originalTabs[availableKeys[i]] = tabs[i];
             }
         });
@@ -25,9 +30,10 @@ var onMsgFuncDispatcher = {
 
     resetFaviconAll: function () {
         if (! originalTabs) return;
-        // 全てのタブにやるのはどうなんだろう。どこかのタイミングでresetするべきかどうか判定するべきでは
         for (var i in originalTabs) {
-            triggerResetFavicon(originalTabs[i].id);
+                chrome.tabs.sendMessage(originalTabs[i].id,{
+                    action: "resetFavicon"
+                });
         }
         originalTabs = null;
     },
@@ -55,23 +61,6 @@ chrome.tabs.onActivated.addListener(function(activeInfo){
     lastTabId = activeTabId;
     activeTabId = activeInfo.tabId;
 });
-
-
-
-
-function triggerChangeFavicon(tabId, favIconUrl) {
-    chrome.tabs.sendMessage(tabId, {
-        action    : "changeFavicon",
-        args: {favIconUrl: favIconUrl}
-    });
-}
-
-// message送る系をfunction化したい
-function triggerResetFavicon(tabId) {
-    chrome.tabs.sendMessage(tabId, {
-        action    : "resetFavicon"
-    });
-}
 
 function getAlphanumericImageUrl(character) {
     var prefix = "";
