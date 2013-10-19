@@ -5,20 +5,24 @@ window.onload = function(){
 
 // Saves options to localStorage.
 function save_options() {
-    localStorage["unbindKeys"] = document.getElementById("unbind-keys").value;
+    var backgroundPage = chrome.extension.getBackgroundPage();
+    var prefixKey = document.getElementById("prefix-key").value;
+    if (prefixKey.length != 1
+        || backgroundPage.alphanumeric.indexOf(prefixKey) == -1) {
+        showMessage("<font color='#FF0000'>prefix keyが不正です。英数字を1文字指定して下さい。</font>");
+        return;
+    }
+
     localStorage["prefixKey"] = document.getElementById("prefix-key").value;
+    localStorage["unbindKeys"] = document.getElementById("unbind-keys").value;
+    localStorage["prefixKey"] = prefixKey;
     localStorage["prefixModifierKey"] = document.getElementById("prefix-modifier-key").value;
 
-    var backgroundPage = chrome.extension.getBackgroundPage();
     backgroundPage.availableKeys = backgroundPage.getAvailableKeys();
     reloadSettings();
 
-    // Update status to let user know options were saved.
-    var status = document.getElementById("status");
-    status.innerHTML = "保存しました";
-    setTimeout(function() {
-        status.innerHTML = "";
-    }, 1500);
+    showMessage("保存しました。");
+    return;
 }
 
 // Restores select box state to saved value from localStorage.
@@ -40,4 +44,12 @@ function reloadSettings() {
             });
         }
     });
+}
+
+function showMessage(message) {
+    var status = document.getElementById("status");
+    status.innerHTML = message;
+    setTimeout(function() {
+        status.innerHTML = "";
+    }, 3000);
 }
