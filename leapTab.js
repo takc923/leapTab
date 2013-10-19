@@ -76,7 +76,6 @@ var onMsgFuncDispatcher = {
         }
         return exists;
     },
-    // 何回もぴんぽんしなくてもsettings dataを直接受け取れば良いのでは
     reloadSettings: loadSettings
 }
 
@@ -128,9 +127,6 @@ function isPrefixEvent(evt) {
 }
 
 // if logicを他のところに移したらもっとシンプルになるのでは
-// faviconのあるなしの判断を自前でやるのではなく、chrome APIに頼るべき
-// ↓ここみたいに無効なfaviconを指定してるとバグる
-// http://www.getproxy.jp/
 function setIconLinkIfNotExists(callback) {
     if (document.head.querySelectorAll("link[rel~=icon]").length > 0) {
         callback();
