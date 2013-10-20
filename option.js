@@ -81,8 +81,11 @@ function showMessage(message) {
 }
 
 function unbindKeys2availableKeys(unbindKeys, prefixKeyEvent) {
-    if (! doesPrefixEventHaveModifierKey(prefixKeyEvent))
-        unbindKeys += String.fromCharCode(prefixKeyEvent.keyCode);
+    if (! doesPrefixEventHaveModifierKey(prefixKeyEvent)) {
+        var code = prefixKeyEvent.keyCode;
+        if (! prefixKeyEvent.shiftKey) code += 32;
+        unbindKeys += String.fromCharCode(code);
+    }
     var availableKeys = "";
     for (var i = 0; i < alphanumeric.length; i++) {
         if (unbindKeys.indexOf(alphanumeric[i]) == -1) {
