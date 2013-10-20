@@ -35,8 +35,8 @@ window.addEventListener("load", function(){
             } else if (isBeforeLeap() && isAvailableEvent(evt)){
                 chrome.runtime.sendMessage({
                     action : "leap",
-                    // これもなんとかならんのか
                     args: {
+                        // REFACTOR ME
                         code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
                     }
                 });
@@ -107,6 +107,7 @@ function isAvailableEvent(evt) {
     && ! evt.ctrlKey && ! evt.metaKey && ! evt.altKey;
 }
 
+// REFACTOR ME
 function isAlphabet(code) {
     return String.fromCharCode(code).search(/^[a-zA-Z]$/) == 0;
 }
