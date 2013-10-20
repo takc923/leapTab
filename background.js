@@ -8,12 +8,12 @@ chrome.storage.sync.get("availableKeys", function(items){
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        var result = onMsgFuncDispatcher[request.action](request.args);
+        var result = onMsgDispatcher[request.action](request.args);
         sendResponse(result);
     }
 );
 
-var onMsgFuncDispatcher = {
+var onMsgDispatcher = {
     prepareLeap: function () {
         chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
             originalTabs = {};
