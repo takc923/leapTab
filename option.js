@@ -61,10 +61,10 @@ function restore_options() {
 function reloadSettings() {
     chrome.windows.getAll({populate: true}, function(arrWin) {
         var tabs = [] ;
-        for(var i = 0;i < arrWin.length; i++) {
+        for (var i = 0;i < arrWin.length; i++) {
             tabs = tabs.concat(arrWin[i].tabs);
         }
-        for(var i = 0;i < tabs.length; i++) {
+        for (var i = 0;i < tabs.length; i++) {
             chrome.tabs.sendMessage(tabs[i].id, {
                 action    : "reloadSettings"
             });
