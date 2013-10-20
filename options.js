@@ -83,7 +83,8 @@ function showMessage(message) {
 function unbindKeys2availableKeys(unbindKeys, prefixKeyEvent) {
     if (! doesPrefixEventHaveModifierKey(prefixKeyEvent)) {
         var code = prefixKeyEvent.keyCode;
-        if (! prefixKeyEvent.shiftKey) code += 32;
+        // REFACTOR ME
+        if (! prefixKeyEvent.shiftKey && isAlphabet(prefixKeyEvent.keyCode)) code += 32;
         unbindKeys += String.fromCharCode(code);
     }
     var availableKeys = "";
@@ -99,4 +100,9 @@ function doesPrefixEventHaveModifierKey(prefixKeyEvent) {
     return prefixKeyEvent.ctrlKey
     || prefixKeyEvent.metaKey
     || prefixKeyEvent.altKey;
+}
+
+// REFACTOR ME
+function isAlphabet(code) {
+    return String.fromCharCode(code).search(/^[a-zA-Z]$/) == 0;
 }
