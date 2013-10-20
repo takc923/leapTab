@@ -95,12 +95,10 @@ function setFavIconLink(favIconUrl) {
 };
 
 function loadSettings(callback) {
-    chrome.runtime.sendMessage({
-        action: "getSettings"
-    }, function(response) {
-        availableKeys = response.availableKeys;
-        prefixKeyEvent = response.prefixKeyEvent;
-        dummyFavIconUrl = response.dummyFavIconUrl;
+    dummyFavIconUrl = chrome.extension.getURL("favicon/dummy_favicon.png");
+    chrome.storage.sync.get(["availableKeys", "prefixKeyEvent"], function(items) {
+        availableKeys = items.availableKeys;
+        prefixKeyEvent = items.prefixKeyEvent;
         callback && callback();
     });
 }

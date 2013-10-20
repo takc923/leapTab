@@ -13,7 +13,7 @@
         "scripts": ["background.js"]
     },
     "options_page": "options.html",
-    "permissions": ["tabs"],
+    "permissions": ["tabs", "storage"],
     "web_accessible_resources": [
         "favicon/*"
     ]
