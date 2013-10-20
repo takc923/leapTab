@@ -1,11 +1,10 @@
-var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var availableKeys;
-// REFACTOR ME
-setAvailableKeys();
 var originalTabs = null;
-var dummyFavIconUrl = chrome.extension.getURL("favicon/dummy_favicon.png");
 var activeTabId;
 var lastTabId;
+var availableKeys;
+chrome.storage.sync.get("availableKeys", function(items){
+    availableKeys = items.availableKeys;
+});
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -66,10 +65,4 @@ function getAlphanumericImageUrl(character) {
         prefix = "c_";
     }
     return chrome.extension.getURL("favicon/" + prefix + character + ".ico");
-}
-
-function setAvailableKeys() {
-    chrome.storage.sync.get("availableKeys", function(items){
-        availableKeys = items.availableKeys;
-    });
 }
