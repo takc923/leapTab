@@ -49,10 +49,10 @@ window.addEventListener("load", function(){
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    onMsgFuncDispatcher[request.action](request.args);
+    onMsgDispatcher[request.action](request.args);
 });
 
-var onMsgFuncDispatcher = {
+var onMsgDispatcher = {
     changeFavicon: function (args) {
         var favIconUrl = args.favIconUrl;
         var query = "link[rel~=icon][href='" + dummyFavIconUrl + "'], link[rel~=icon]:not([href^=chrome-extension])";
