@@ -1,7 +1,7 @@
 var dummyInputElementId = "leaptab-dummy-element";
 var availableKeys = "";
 var prefixKeyEvent = {};
-var dummyFavIconUrl = "";
+var dummyFavIconUrl = chrome.extension.getURL("favicon/dummy_favicon.png");
 var lastActiveElement;
 
 window.addEventListener("load", function(){
@@ -95,7 +95,6 @@ function setFavIconLink(favIconUrl) {
 };
 
 function loadSettings(callback) {
-    dummyFavIconUrl = chrome.extension.getURL("favicon/dummy_favicon.png");
     chrome.storage.sync.get(["availableKeys", "prefixKeyEvent"], function(items) {
         availableKeys = items.availableKeys;
         prefixKeyEvent = items.prefixKeyEvent;
