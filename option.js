@@ -1,3 +1,5 @@
+var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 window.onload = function(){
     restore_options();
     document.getElementById("save-button").addEventListener("click",save_options);
@@ -8,7 +10,7 @@ function save_options() {
     var backgroundPage = chrome.extension.getBackgroundPage();
     var prefixKey = document.getElementById("prefix-key").value;
     if (prefixKey.length != 1
-        || backgroundPage.alphanumeric.indexOf(prefixKey) == -1) {
+        || alphanumeric.indexOf(prefixKey) == -1) {
         showMessage("<font color='#FF0000'>prefix keyが不正です。英数字を1文字指定して下さい。</font>");
         return;
     }
@@ -79,7 +81,6 @@ function showMessage(message) {
 }
 
 function unbindKeys2availableKeys(unbindKeys, prefixKeyEvent) {
-    var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     if (! doesPrefixEventHaveModifierKey(prefixKeyEvent))
         unbindKeys += String.fromCharCode(prefixKeyEvent.keyCode);
     var availableKeys = "";
