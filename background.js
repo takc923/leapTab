@@ -1,5 +1,7 @@
 var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var availableKeys = getAvailableKeys();
+var availableKeys;
+// REFACTOR ME
+setAvailableKeys();
 var originalTabs = null;
 var dummyFavIconUrl = chrome.extension.getURL("favicon/dummy_favicon.png");
 var activeTabId;
@@ -44,14 +46,6 @@ var onMsgFuncDispatcher = {
         chrome.tabs.update(originalTabs[String.fromCharCode(code)].id, {active: true});
     },
 
-    getSettings: function () {
-        return {
-            availableKeys: availableKeys,
-            prefixKeyEvent: getPrefixKeyEvent(),
-            dummyFavIconUrl: dummyFavIconUrl
-        };
-    },
-
     leapLastTab: function () {
         chrome.tabs.update(lastTabId, {active: true});
     }
@@ -74,34 +68,8 @@ function getAlphanumericImageUrl(character) {
     return chrome.extension.getURL("favicon/" + prefix + character + ".ico");
 }
 
-function getAvailableKeys() {
-    var unavailableKeys = localStorage["unbindKeys"] || "";
-    if (! doesPrefixEventHaveModifierKey())
-        unavailableKeys += localStorage["prefixKey"];
-    var availableKeys = "";
-    for (var i = 0; i < alphanumeric.length; i++) {
-        if (unavailableKeys.indexOf(alphanumeric[i]) == -1) {
-            availableKeys += alphanumeric[i];
-        }
-    }
-    return availableKeys;
-}
-
-function getPrefixKeyEvent() {
-    return {
-        keyCode  : localStorage["prefixKey"].toUpperCase().charCodeAt(0),
-        shiftKey : localStorage["prefixModifierKey"] == "shiftKey",
-        ctrlKey  : localStorage["prefixModifierKey"] == "ctrlKey",
-        metaKey  : localStorage["prefixModifierKey"] == "metaKey",
-        altKey   : localStorage["prefixModifierKey"] == "altKey"
-    };
-}
-
-
-// 同じコードはファイル切り出してbackgroundとfrontendでどっちも読みこめばいいのでは
-function doesPrefixEventHaveModifierKey() {
-    var prefixKeyEvent = getPrefixKeyEvent();
-    return prefixKeyEvent.ctrlKey
-    || prefixKeyEvent.metaKey
-    || prefixKeyEvent.altKey;
+function setAvailableKeys() {
+    chrome.storage.sync.get("availableKeys", function(items){
+        availableKeys = items.availableKeys;
+    });
 }

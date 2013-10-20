@@ -3,7 +3,7 @@ window.onload = function(){
     document.getElementById("save-button").addEventListener("click",save_options);
 };
 
-// Saves options to localStorage.
+// Saves options to chrome.storage.
 function save_options() {
     var backgroundPage = chrome.extension.getBackgroundPage();
     var prefixKey = document.getElementById("prefix-key").value;
@@ -13,23 +13,47 @@ function save_options() {
         return;
     }
 
-    localStorage["prefixKey"] = document.getElementById("prefix-key").value;
-    localStorage["unbindKeys"] = document.getElementById("unbind-keys").value;
-    localStorage["prefixKey"] = prefixKey;
-    localStorage["prefixModifierKey"] = document.getElementById("prefix-modifier-key").value;
+    var prefixModifierKey = document.getElementById("prefix-modifier-key").value;
+    var prefixKeyEvent = {
+        keyCode  : prefixKey.toUpperCase().charCodeAt(0),
+        shiftKey : prefixModifierKey == "shiftKey",
+        ctrlKey  : prefixModifierKey == "ctrlKey",
+        metaKey  : prefixModifierKey == "metaKey",
+        altKey   : prefixModifierKey == "altKey"
+    };
+    var unbindKeys = document.getElementById("unbind-keys").value;
+    var availableKeys = unbindKeys2availableKeys(
+        unbindKeys,
+        prefixKeyEvent
+    );
 
-    backgroundPage.availableKeys = backgroundPage.getAvailableKeys();
-    reloadSettings();
+    chrome.storage.sync.set({
+        // for background and frontend js to get
+        prefixKeyEvent: prefixKeyEvent,
+        availableKeys : availableKeys,
+        // for this js to restore
+        unbindKeys    : unbindKeys,
+        prefixKey     : prefixKey,
+        prefixModifierKey: prefixModifierKey
+    },function() {
+        if (chrome.runtime.lastError) {
+            showMessage("<font color='#FF0000'>保存に失敗しました。</font>");
+        } else {
+            backgroundPage.availableKeys = availableKeys;
+            reloadSettings();
 
-    showMessage("保存しました。");
-    return;
+            showMessage("保存しました。");
+        }
+    });
 }
 
-// Restores select box state to saved value from localStorage.
+// Restores select box state to saved value from chrome.torage.
 function restore_options() {
-    document.getElementById("unbind-keys").value = localStorage["unbindKeys"] || "";
-    document.getElementById("prefix-key").value = localStorage["prefixKey"] || "";
-    document.getElementById("prefix-modifier-key").value = localStorage["prefixModifierKey"] || "";
+    chrome.storage.sync.get(["unbindKeys", "prefixKey", "prefixModifierKey"],function(items){
+        document.getElementById("unbind-keys").value = items.unbindKeys || "";
+        document.getElementById("prefix-key").value = items.prefixKey || "";
+        document.getElementById("prefix-modifier-key").value = items.prefixModifierKey || "";
+    });
 }
 
 function reloadSettings() {
@@ -52,4 +76,23 @@ function showMessage(message) {
     setTimeout(function() {
         status.innerHTML = "";
     }, 3000);
+}
+
+function unbindKeys2availableKeys(unbindKeys, prefixKeyEvent) {
+    var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (! doesPrefixEventHaveModifierKey(prefixKeyEvent))
+        unbindKeys += String.fromCharCode(prefixKeyEvent.keyCode);
+    var availableKeys = "";
+    for (var i = 0; i < alphanumeric.length; i++) {
+        if (unbindKeys.indexOf(alphanumeric[i]) == -1) {
+            availableKeys += alphanumeric[i];
+        }
+    }
+    return availableKeys;
+}
+
+function doesPrefixEventHaveModifierKey(prefixKeyEvent) {
+    return prefixKeyEvent.ctrlKey
+    || prefixKeyEvent.metaKey
+    || prefixKeyEvent.altKey;
 }
