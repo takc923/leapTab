@@ -32,9 +32,9 @@ var onMsgDispatcher = {
     resetFaviconAll: function () {
         if (! originalTabs) return;
         for (var i in originalTabs) {
-                chrome.tabs.sendMessage(originalTabs[i].id,{
-                    action: "resetFavicon"
-                });
+            chrome.tabs.sendMessage(originalTabs[i].id,{
+                action: "resetFavicon"
+            });
         }
         originalTabs = null;
     },
