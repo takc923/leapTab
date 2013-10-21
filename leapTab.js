@@ -96,6 +96,10 @@ function setFavIconLink(favIconUrl) {
 
 function loadSettings(callback) {
     chrome.storage.sync.get(["availableKeys", "prefixKeyEvent"], function(items) {
+        if (chrome.extension.lastError) {
+            console.log(chrome.extension.lastError.message);
+            return;
+        }
         availableKeys = items.availableKeys;
         prefixKeyEvent = items.prefixKeyEvent;
         callback && callback();
