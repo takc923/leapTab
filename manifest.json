@@ -1,7 +1,7 @@
 {
     "name": "Leap Tab",
     "manifest_version": 2,
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "キーボードでタブ移動する",
     "content_scripts": [
         {
