@@ -3,7 +3,7 @@ var activeTabId;
 var lastTabId;
 var availableKeys;
 chrome.storage.sync.get("availableKeys", function(items){
-    availableKeys = items.availableKeys;
+    availableKeys = items.availableKeys || settings.alphanumeric;
 });
 
 chrome.runtime.onMessage.addListener(

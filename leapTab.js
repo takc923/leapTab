@@ -98,8 +98,8 @@ function loadSettings(callback) {
             console.log(chrome.extension.lastError.message);
             return;
         }
-        availableKeys = items.availableKeys;
-        prefixKeyEvent = items.prefixKeyEvent;
+        availableKeys = items.availableKeys || settings.alphanumeric;
+        prefixKeyEvent = items.prefixKeyEvent || settings.defaultPrefixKeyEvent;
         callback && callback();
     });
 }

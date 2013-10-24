@@ -10,7 +10,7 @@
         }
     ],
     "background": {
-        "scripts": ["background.js"]
+        "scripts": ["util.js", "background.js"]
     },
     "options_page": "options.html",
     "permissions": ["tabs", "storage"],

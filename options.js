@@ -1,5 +1,3 @@
-var alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
 window.onload = function(){
     restore_options();
     document.getElementById("save-button").addEventListener("click",save_options);
@@ -10,7 +8,7 @@ function save_options() {
     var backgroundPage = chrome.extension.getBackgroundPage();
     var prefixKey = document.getElementById("prefix-key").value;
     if (prefixKey.length != 1
-        || alphanumeric.indexOf(prefixKey) == -1) {
+        || settings.alphanumeric.indexOf(prefixKey) == -1) {
         showMessage("<font color='#FF0000'>prefix keyが不正です。英数字を1文字指定して下さい。</font>");
         return;
     }
@@ -53,8 +51,8 @@ function save_options() {
 function restore_options() {
     chrome.storage.sync.get(["unbindKeys", "prefixKey", "prefixModifierKey"],function(items){
         document.getElementById("unbind-keys").value = items.unbindKeys || "";
-        document.getElementById("prefix-key").value = items.prefixKey || "";
-        document.getElementById("prefix-modifier-key").value = items.prefixModifierKey || "";
+        document.getElementById("prefix-key").value = items.prefixKey || settings.defaultPrefixKey;
+        document.getElementById("prefix-modifier-key").value = items.prefixModifierKey || settings.defaultPrefixModifierKey;
     });
 }
 
@@ -85,9 +83,9 @@ function unbindKeys2availableKeys(unbindKeys, prefixKeyEvent) {
         unbindKeys += util.getCharFromKeyEvent(prefixKeyEvent);
     }
     var availableKeys = "";
-    for (var i = 0; i < alphanumeric.length; i++) {
-        if (unbindKeys.indexOf(alphanumeric[i]) == -1) {
-            availableKeys += alphanumeric[i];
+    for (var i = 0; i < settings.alphanumeric.length; i++) {
+        if (unbindKeys.indexOf(settings.alphanumeric[i]) == -1) {
+            availableKeys += settings.alphanumeric[i];
         }
     }
     return availableKeys;
