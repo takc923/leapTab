@@ -49,7 +49,7 @@ function save_options() {
     });
 }
 
-// Restores select box state to saved value from chrome.torage.
+// Restores select box state to saved value from chrome.storage.
 function restore_options() {
     chrome.storage.sync.get(["unbindKeys", "prefixKey", "prefixModifierKey"],function(items){
         document.getElementById("unbind-keys").value = items.unbindKeys || "";
@@ -81,11 +81,8 @@ function showMessage(message) {
 }
 
 function unbindKeys2availableKeys(unbindKeys, prefixKeyEvent) {
-    if (! doesPrefixEventHaveModifierKey(prefixKeyEvent)) {
-        var code = prefixKeyEvent.keyCode;
-        // REFACTOR ME
-        if (! prefixKeyEvent.shiftKey && isAlphabet(prefixKeyEvent.keyCode)) code += 32;
-        unbindKeys += String.fromCharCode(code);
+    if (! util.hasModifierKey(prefixKeyEvent)) {
+        unbindKeys += util.getCharFromKeyEvent(prefixKeyEvent);
     }
     var availableKeys = "";
     for (var i = 0; i < alphanumeric.length; i++) {
@@ -94,15 +91,4 @@ function unbindKeys2availableKeys(unbindKeys, prefixKeyEvent) {
         }
     }
     return availableKeys;
-}
-
-function doesPrefixEventHaveModifierKey(prefixKeyEvent) {
-    return prefixKeyEvent.ctrlKey
-    || prefixKeyEvent.metaKey
-    || prefixKeyEvent.altKey;
-}
-
-// REFACTOR ME
-function isAlphabet(code) {
-    return String.fromCharCode(code).search(/^[a-zA-Z]$/) == 0;
 }

@@ -25,7 +25,7 @@ window.addEventListener("load", function(){
 
         document.addEventListener("keydown", function(evt){
             if (isPrefixEvent(evt) && ! isBeforeLeap()
-               && (doesPrefixEventHaveModifierKey() || document.activeElement.tagName == "BODY")) {
+               && (util.hasModifierKey(prefixKeyEvent) || document.activeElement.tagName == "BODY")) {
                 lastActiveElement = document.activeElement;
                 dummyElement.focus();
             } else if (isPrefixEvent(evt) && isBeforeLeap()) {
@@ -33,12 +33,10 @@ window.addEventListener("load", function(){
                     action : "leapLastTab"
                 });
             } else if (isBeforeLeap() && isAvailableEvent(evt)){
+                var character = util.getCharFromKeyEvent(evt);
                 chrome.runtime.sendMessage({
                     action : "leap",
-                    args: {
-                        // REFACTOR ME
-                        code   : (evt.shiftKey || ! isAlphabet(evt.keyCode)) ? evt.keyCode : evt.keyCode + 32
-                    }
+                    args: {character: character}
                 });
                 setTimeout(function(){
                     dummyElement.blur();
@@ -111,21 +109,16 @@ function isAvailableEvent(evt) {
     && ! evt.ctrlKey && ! evt.metaKey && ! evt.altKey;
 }
 
-// REFACTOR ME
-function isAlphabet(code) {
-    return String.fromCharCode(code).search(/^[a-zA-Z]$/) == 0;
-}
-
 function isBeforeLeap() {
     return document.activeElement.id == dummyInputElementId;
 }
 
 function isPrefixEvent(evt) {
     return evt.shiftKey == prefixKeyEvent.shiftKey
-        && evt.ctrlKey == prefixKeyEvent.ctrlKey
-        && evt.metaKey == prefixKeyEvent.metaKey
-        && evt.altKey == prefixKeyEvent.altKey
-        && evt.keyCode == prefixKeyEvent.keyCode;
+        && evt.ctrlKey  == prefixKeyEvent.ctrlKey
+        && evt.metaKey  == prefixKeyEvent.metaKey
+        && evt.altKey   == prefixKeyEvent.altKey
+        && evt.keyCode  == prefixKeyEvent.keyCode;
 }
 
 function setIconLinkIfNotExists(callback) {
@@ -156,10 +149,4 @@ function setDummyElement() {
     dummyInput.style.zIndex = "-100";
     dummyInput.id = dummyInputElementId;
     document.body.appendChild(dummyInput);
-}
-
-function doesPrefixEventHaveModifierKey() {
-    return prefixKeyEvent.ctrlKey
-    || prefixKeyEvent.metaKey
-    || prefixKeyEvent.altKey;
 }

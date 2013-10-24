@@ -40,9 +40,9 @@ var onMsgDispatcher = {
     },
 
     leap: function (args) {
-        var code = args.code;
-        if (availableKeys.indexOf(String.fromCharCode(code)) >= originalTabs.length) this.resetFaviconAll();
-        chrome.tabs.update(originalTabs[String.fromCharCode(code)].id, {active: true});
+        var character = args.character;
+        if (availableKeys.indexOf(character) >= originalTabs.length) this.resetFaviconAll();
+        chrome.tabs.update(originalTabs[character].id, {active: true});
     },
 
     leapLastTab: function () {
