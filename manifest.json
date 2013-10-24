@@ -2,7 +2,7 @@
     "name": "Leap Tab",
     "manifest_version": 2,
     "version": "0.0.1",
-    "description": "キーボードでタブ移動する",
+    "description": "You can leap tab to tab by keyboard with this extension.",
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
