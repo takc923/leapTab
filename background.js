@@ -1,9 +1,8 @@
 var originalTabs = null;
 var activeTabId;
 var lastTabId;
-var availableKeys;
 chrome.storage.sync.get("availableKeys", function(items){
-    availableKeys = items.availableKeys || settings.alphanumeric;
+    settings.availableKeys = items.availableKeys || settings.alphanumeric;
 });
 
 chrome.runtime.onMessage.addListener(
@@ -17,14 +16,14 @@ var onMsgDispatcher = {
     prepareLeap: function () {
         chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
             originalTabs = {};
-            for (var i = 0; i < availableKeys.length && i < tabs.length; i++) {
+            for (var i = 0; i < settings.availableKeys.length && i < tabs.length; i++) {
                 chrome.tabs.sendMessage(tabs[i].id,{
                     action: "changeFavicon",
                     args  : {
-                        favIconUrl: getAlphanumericImageUrl(availableKeys[i])
+                        favIconUrl: getAlphanumericImageUrl(settings.availableKeys[i])
                     }
                 });
-                originalTabs[availableKeys[i]] = tabs[i];
+                originalTabs[settings.availableKeys[i]] = tabs[i];
             }
         });
     },
@@ -41,7 +40,7 @@ var onMsgDispatcher = {
 
     leap: function (args) {
         var character = args.character;
-        if (availableKeys.indexOf(character) >= originalTabs.length) this.resetFaviconAll();
+        if (settings.availableKeys.indexOf(character) >= originalTabs.length) this.resetFaviconAll();
         chrome.tabs.update(originalTabs[character].id, {active: true});
     },
 

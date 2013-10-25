@@ -12,19 +12,23 @@ window.util = {
     }
 };
 
-// TODO: include settings not default.
 var defaultPrefixKeyCode = 84; //t
-var prefixModifierKey = "ctrlKey";
+var defaultPrefixModifierKey = "ctrlKey";
+
 window.settings = {
+    dummyFavIconUrl: chrome.extension.getURL("favicon/dummy_favicon.png"),
+    dummyInputElementId: "leaptab-dummy-element",
     alphanumeric: "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     // TODO: change options page interface.
     defaultPrefixKeyEvent: {
-        shiftKey: prefixModifierKey == "shiftKey",
-        metaKey: prefixModifierKey == "metaKey",
-        ctrlKey: prefixModifierKey == "ctrlKey",
-        altKey: prefixModifierKey == "altKey",
+        shiftKey: defaultPrefixModifierKey == "shiftKey",
+        metaKey: defaultPrefixModifierKey == "metaKey",
+        ctrlKey: defaultPrefixModifierKey == "ctrlKey",
+        altKey: defaultPrefixModifierKey == "altKey",
         keyCode: defaultPrefixKeyCode
     },
     defaultPrefixKey: String.fromCharCode(defaultPrefixKeyCode),
-    defaultPrefixModifierKey: prefixModifierKey
+    defaultPrefixModifierKey: defaultPrefixModifierKey,
+    availableKeys: "",
+    prefixKeyEvent: {}
 };

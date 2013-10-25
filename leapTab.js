@@ -1,12 +1,8 @@
-var dummyInputElementId = "leaptab-dummy-element";
-var availableKeys = "";
-var prefixKeyEvent = {};
-var dummyFavIconUrl = chrome.extension.getURL("favicon/dummy_favicon.png");
 var lastActiveElement;
 
 window.addEventListener("load", function(){
     initialize(function(){
-        var dummyElement = document.getElementById(dummyInputElementId);
+        var dummyElement = document.getElementById(settings.dummyInputElementId);
 
         dummyElement.addEventListener("blur", function(evt){
             chrome.runtime.sendMessage({
@@ -25,7 +21,7 @@ window.addEventListener("load", function(){
 
         document.addEventListener("keydown", function(evt){
             if (isPrefixEvent(evt) && ! isBeforeLeap()
-               && (util.hasModifierKey(prefixKeyEvent) || document.activeElement.tagName == "BODY")) {
+               && (util.hasModifierKey(settings.prefixKeyEvent) || document.activeElement.tagName == "BODY")) {
                 lastActiveElement = document.activeElement;
                 dummyElement.focus();
             } else if (isPrefixEvent(evt) && isBeforeLeap()) {
@@ -53,7 +49,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 var onMsgDispatcher = {
     changeFavicon: function (args) {
         var favIconUrl = args.favIconUrl;
-        var query = "link[rel~=icon][href='" + dummyFavIconUrl + "'], link[rel~=icon]:not([href^=chrome-extension])";
+        var query = "link[rel~=icon][href='" + settings.dummyFavIconUrl + "'], link[rel~=icon]:not([href^=chrome-extension])";
         var faviconLinks = document.head.querySelectorAll(query);
         var exists = false;
 
@@ -98,27 +94,27 @@ function loadSettings(callback) {
             console.log(chrome.extension.lastError.message);
             return;
         }
-        availableKeys = items.availableKeys || settings.alphanumeric;
-        prefixKeyEvent = items.prefixKeyEvent || settings.defaultPrefixKeyEvent;
+        settings.availableKeys = items.availableKeys || settings.alphanumeric;
+        settings.prefixKeyEvent = items.prefixKeyEvent || settings.defaultPrefixKeyEvent;
         callback && callback();
     });
 }
 
 function isAvailableEvent(evt) {
-    return availableKeys.indexOf(String.fromCharCode(evt.keyCode)) != -1
+    return settings.availableKeys.indexOf(String.fromCharCode(evt.keyCode)) != -1
     && ! evt.ctrlKey && ! evt.metaKey && ! evt.altKey;
 }
 
 function isBeforeLeap() {
-    return document.activeElement.id == dummyInputElementId;
+    return document.activeElement.id == settings.dummyInputElementId;
 }
 
 function isPrefixEvent(evt) {
-    return evt.shiftKey == prefixKeyEvent.shiftKey
-        && evt.ctrlKey  == prefixKeyEvent.ctrlKey
-        && evt.metaKey  == prefixKeyEvent.metaKey
-        && evt.altKey   == prefixKeyEvent.altKey
-        && evt.keyCode  == prefixKeyEvent.keyCode;
+    return evt.shiftKey == settings.prefixKeyEvent.shiftKey
+        && evt.ctrlKey  == settings.prefixKeyEvent.ctrlKey
+        && evt.metaKey  == settings.prefixKeyEvent.metaKey
+        && evt.altKey   == settings.prefixKeyEvent.altKey
+        && evt.keyCode  == settings.prefixKeyEvent.keyCode;
 }
 
 function setIconLinkIfNotExists(callback) {
@@ -133,7 +129,7 @@ function setIconLinkIfNotExists(callback) {
         var is_success = this.status == 200
                 && this.getResponseHeader("Content-Length") != 0
                 && this.getResponseHeader("Content-Type").search(/^image/) != -1;
-        setFavIconLink(is_success ? location.origin + "/favicon.ico" : dummyFavIconUrl);
+        setFavIconLink(is_success ? location.origin + "/favicon.ico" : settings.dummyFavIconUrl);
         callback();
     });
     req.send();
@@ -147,6 +143,6 @@ function setDummyElement() {
     dummyInput.style.left = "0px";
     dummyInput.style.opacity = "0";
     dummyInput.style.zIndex = "-100";
-    dummyInput.id = dummyInputElementId;
+    dummyInput.id = settings.dummyInputElementId;
     document.body.appendChild(dummyInput);
 }
