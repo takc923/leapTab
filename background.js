@@ -1,9 +1,8 @@
 var originalTabs = null;
 var activeTabId;
 var lastTabId;
-chrome.storage.sync.get("availableKeys", function(items){
-    settings.availableKeys = items.availableKeys || settings.alphanumeric;
-});
+
+settings.load();
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {

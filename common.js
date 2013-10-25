@@ -29,6 +29,30 @@ window.settings = {
     },
     defaultPrefixKey: String.fromCharCode(defaultPrefixKeyCode),
     defaultPrefixModifierKey: defaultPrefixModifierKey,
+    // TODO: rename
     availableKeys: "",
-    prefixKeyEvent: {}
+    prefixKeyEvent: {},
+    load: function(callback) {
+        var self = this;
+        chrome.storage.sync.get(["availableKeys", "prefixKeyEvent"], function(items) {
+            if (chrome.extension.lastError) {
+                console.log(chrome.extension.lastError.message);
+                return;
+            }
+            self.availableKeys = items.availableKeys || self.alphanumeric;
+            self.prefixKeyEvent = items.prefixKeyEvent || self.defaultPrefixKeyEvent;
+            callback && callback();
+        });
+    },
+    isPrefixEvent: function (evt) {
+        return evt.shiftKey == this.prefixKeyEvent.shiftKey
+            && evt.ctrlKey  == this.prefixKeyEvent.ctrlKey
+            && evt.metaKey  == this.prefixKeyEvent.metaKey
+            && evt.altKey   == this.prefixKeyEvent.altKey
+            && evt.keyCode  == this.prefixKeyEvent.keyCode;
+    },
+    isAvailableEvent: function(evt) {
+        return this.availableKeys.indexOf(String.fromCharCode(evt.keyCode)) != -1
+            && ! evt.ctrlKey && ! evt.metaKey && ! evt.altKey;
+    }
 };

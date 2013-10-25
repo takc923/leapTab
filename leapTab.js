@@ -20,15 +20,15 @@ window.addEventListener("load", function(){
         });
 
         document.addEventListener("keydown", function(evt){
-            if (isPrefixEvent(evt) && ! isBeforeLeap()
+            if (settings.isPrefixEvent(evt) && ! isBeforeLeap()
                && (util.hasModifierKey(settings.prefixKeyEvent) || document.activeElement.tagName == "BODY")) {
                 lastActiveElement = document.activeElement;
                 dummyElement.focus();
-            } else if (isPrefixEvent(evt) && isBeforeLeap()) {
+            } else if (settings.isPrefixEvent(evt) && isBeforeLeap()) {
                 chrome.runtime.sendMessage({
                     action : "leapLastTab"
                 });
-            } else if (isBeforeLeap() && isAvailableEvent(evt)){
+            } else if (isBeforeLeap() && settings.isAvailableEvent(evt)){
                 var character = util.getCharFromKeyEvent(evt);
                 chrome.runtime.sendMessage({
                     action : "leap",
@@ -70,11 +70,11 @@ var onMsgDispatcher = {
         }
         return exists;
     },
-    reloadSettings: loadSettings
+    reloadSettings: function() { settings.load(); }
 }
 
 function initialize(callback) {
-    loadSettings(function() {
+    settings.load(function() {
         setDummyElement();
         setIconLinkIfNotExists(callback);
     });
@@ -88,33 +88,8 @@ function setFavIconLink(favIconUrl) {
     document.head.appendChild(newLink);
 };
 
-function loadSettings(callback) {
-    chrome.storage.sync.get(["availableKeys", "prefixKeyEvent"], function(items) {
-        if (chrome.extension.lastError) {
-            console.log(chrome.extension.lastError.message);
-            return;
-        }
-        settings.availableKeys = items.availableKeys || settings.alphanumeric;
-        settings.prefixKeyEvent = items.prefixKeyEvent || settings.defaultPrefixKeyEvent;
-        callback && callback();
-    });
-}
-
-function isAvailableEvent(evt) {
-    return settings.availableKeys.indexOf(String.fromCharCode(evt.keyCode)) != -1
-    && ! evt.ctrlKey && ! evt.metaKey && ! evt.altKey;
-}
-
 function isBeforeLeap() {
     return document.activeElement.id == settings.dummyInputElementId;
-}
-
-function isPrefixEvent(evt) {
-    return evt.shiftKey == settings.prefixKeyEvent.shiftKey
-        && evt.ctrlKey  == settings.prefixKeyEvent.ctrlKey
-        && evt.metaKey  == settings.prefixKeyEvent.metaKey
-        && evt.altKey   == settings.prefixKeyEvent.altKey
-        && evt.keyCode  == settings.prefixKeyEvent.keyCode;
 }
 
 function setIconLinkIfNotExists(callback) {
