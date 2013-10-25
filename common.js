@@ -1,4 +1,3 @@
-// TODO: rename this file.
 window.util = {
     hasModifierKey: function (evt) {
         return evt.ctrlKey || evt.metaKey || evt.altKey;
