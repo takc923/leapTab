@@ -14,6 +14,7 @@ function save_options() {
     }
 
     var prefixModifierKey = document.getElementById("prefix-modifier-key").value;
+    // TODO: clip this process into util or settings.
     var prefixKeyEvent = {
         keyCode  : prefixKey.toUpperCase().charCodeAt(0),
         shiftKey : prefixModifierKey == "shiftKey",
