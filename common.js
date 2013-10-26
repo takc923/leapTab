@@ -14,20 +14,18 @@ window.settings = new function () {
     var defaultPrefixKeyCode = 84; //t
 
     this.defaultPrefixModifierKey = "ctrlKey";
-    var defaultPrefixKeyEvent = {
-        shiftKey: this.defaultPrefixModifierKey == "shiftKey",
-        metaKey: this.defaultPrefixModifierKey == "metaKey",
-        ctrlKey: this.defaultPrefixModifierKey == "ctrlKey",
-        altKey: this.defaultPrefixModifierKey == "altKey",
-        keyCode: defaultPrefixKeyCode
-    };
 
     this.dummyFavIconUrl = chrome.extension.getURL("favicon/dummy_favicon.png");
     this.dummyInputElementId = "leaptab-dummy-element";
     this.alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    this.defaultPrefixKey = String.fromCharCode(defaultPrefixKeyCode),
-    this.leapKeys = "";
+    this.defaultPrefixKey = String.fromCharCode(defaultPrefixKeyCode).toLowerCase(),
+    this.leapKeys = this.alphanumeric;
     this.prefixKeyEvent = {
+        shiftKey: this.defaultPrefixModifierKey == "shiftKey",
+        metaKey: this.defaultPrefixModifierKey == "metaKey",
+        ctrlKey: this.defaultPrefixModifierKey == "ctrlKey",
+        altKey: this.defaultPrefixModifierKey == "altKey",
+        keyCode: defaultPrefixKeyCode,
         hasModifierKey: function() {
             return this.ctrlKey || this.metaKey || this.altKey;
         },
@@ -48,8 +46,8 @@ window.settings = new function () {
                 console.log(chrome.extension.lastError.message);
                 return;
             }
-            self.leapKeys = items.leapKeys || self.alphanumeric;
-            self.prefixKeyEvent.merge(items.prefixKeyEvent || defaultPrefixKeyEvent);
+            if (items.leapKeys) self.leapKeys = items.leapKeys;
+            if (items.prefixKeyEvent) self.prefixKeyEvent.merge(items.prefixKeyEvent);
             callback && callback();
         });
     },
