@@ -11,7 +11,7 @@ window.util = {
 
 window.settings = new function () {
     var self = this;
-    var defaultPrefixKeyCode = 116; //t
+    var defaultPrefixKeyCode = 84; //t
 
     this.defaultPrefixModifierKey = "ctrlKey";
     var defaultPrefixKeyEvent = {
