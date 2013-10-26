@@ -20,11 +20,11 @@ window.addEventListener("load", function(){
         });
 
         document.addEventListener("keydown", function(evt){
-            if (settings.isPrefixEvent(evt) && ! isBeforeLeap()
-               && (util.hasModifierKey(settings.prefixKeyEvent) || document.activeElement.tagName == "BODY")) {
+            if (settings.prefixKeyEvent.equal(evt) && ! isBeforeLeap()
+               && (settings.prefixKeyEvent.hasModifierKey() || document.activeElement.tagName == "BODY")) {
                 lastActiveElement = document.activeElement;
                 dummyElement.focus();
-            } else if (settings.isPrefixEvent(evt) && isBeforeLeap()) {
+            } else if (settings.prefixKeyEvent.equal(evt) && isBeforeLeap()) {
                 chrome.runtime.sendMessage({
                     action : "leapLastTab"
                 });

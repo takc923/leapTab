@@ -79,7 +79,7 @@ function showMessage(message) {
 }
 
 function unbindKeys2availableKeys(unbindKeys, prefixKeyEvent) {
-    if (! util.hasModifierKey(prefixKeyEvent)) {
+    if (! settings.prefixKeyEvent.hasModifierKey()) {
         unbindKeys += util.getCharFromKeyEvent(prefixKeyEvent);
     }
     var availableKeys = "";
