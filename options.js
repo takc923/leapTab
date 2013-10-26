@@ -31,7 +31,7 @@ function save_options() {
         // for background and frontend js to get
         prefixKeyEvent: prefixKeyEvent,
         leapKeys : leapKeys,
-        // for this js to restore
+        // for restore
         unbindKeys    : unbindKeys,
         prefixKey     : prefixKey,
         prefixModifierKey: prefixModifierKey
