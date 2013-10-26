@@ -15,14 +15,14 @@ var onMsgDispatcher = {
     prepareLeap: function () {
         chrome.tabs.query({active: false, currentWindow: true}, function(tabs) {
             originalTabs = {};
-            for (var i = 0; i < settings.availableKeys.length && i < tabs.length; i++) {
+            for (var i = 0; i < settings.leapKeys.length && i < tabs.length; i++) {
                 chrome.tabs.sendMessage(tabs[i].id,{
                     action: "changeFavicon",
                     args  : {
-                        favIconUrl: getAlphanumericImageUrl(settings.availableKeys[i])
+                        favIconUrl: getAlphanumericImageUrl(settings.leapKeys[i])
                     }
                 });
-                originalTabs[settings.availableKeys[i]] = tabs[i];
+                originalTabs[settings.leapKeys[i]] = tabs[i];
             }
         });
     },
@@ -39,7 +39,7 @@ var onMsgDispatcher = {
 
     leap: function (args) {
         var character = args.character;
-        if (settings.availableKeys.indexOf(character) >= originalTabs.length) this.resetFaviconAll();
+        if (settings.leapKeys.indexOf(character) >= originalTabs.length) this.resetFaviconAll();
         chrome.tabs.update(originalTabs[character].id, {active: true});
     },
 

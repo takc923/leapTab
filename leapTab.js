@@ -28,7 +28,7 @@ window.addEventListener("load", function(){
                 chrome.runtime.sendMessage({
                     action : "leapLastTab"
                 });
-            } else if (isBeforeLeap() && settings.isAvailableEvent(evt)){
+            } else if (isBeforeLeap() && settings.isLeapEvent(evt)){
                 var character = util.getCharFromKeyEvent(evt);
                 chrome.runtime.sendMessage({
                     action : "leap",

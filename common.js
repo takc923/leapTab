@@ -11,7 +11,7 @@ window.util = {
 
 window.settings = new function () {
     var self = this;
-    var defaultPrefixKeyCode = 84; //t
+    var defaultPrefixKeyCode = 116; //t
 
     this.defaultPrefixModifierKey = "ctrlKey";
     var defaultPrefixKeyEvent = {
@@ -26,7 +26,7 @@ window.settings = new function () {
     this.dummyInputElementId = "leaptab-dummy-element";
     this.alphanumeric = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     this.defaultPrefixKey = String.fromCharCode(defaultPrefixKeyCode),
-    this.availableKeys = "";
+    this.leapKeys = "";
     this.prefixKeyEvent = {
         hasModifierKey: function() {
             return this.ctrlKey || this.metaKey || this.altKey;
@@ -43,18 +43,18 @@ window.settings = new function () {
         }
     };
     this.load = function(callback) {
-        chrome.storage.sync.get(["availableKeys", "prefixKeyEvent"], function(items) {
+        chrome.storage.sync.get(["leapKeys", "prefixKeyEvent"], function(items) {
             if (chrome.extension.lastError) {
                 console.log(chrome.extension.lastError.message);
                 return;
             }
-            self.availableKeys = items.availableKeys || self.alphanumeric;
+            self.leapKeys = items.leapKeys || self.alphanumeric;
             self.prefixKeyEvent.merge(items.prefixKeyEvent || defaultPrefixKeyEvent);
             callback && callback();
         });
     },
-    this.isAvailableEvent = function(evt) {
-        return this.availableKeys.indexOf(String.fromCharCode(evt.keyCode)) != -1
+    this.isLeapEvent = function(evt) {
+        return this.leapKeys.indexOf(String.fromCharCode(evt.keyCode)) != -1
             && ! evt.ctrlKey && ! evt.metaKey && ! evt.altKey;
     }
 }();

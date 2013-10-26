@@ -22,7 +22,7 @@ function save_options() {
         altKey   : prefixModifierKey == "altKey"
     };
     var unbindKeys = document.getElementById("unbind-keys").value;
-    var availableKeys = unbindKeys2availableKeys(
+    var leapKeys = unbindKeys2leapKeys(
         unbindKeys,
         prefixKeyEvent
     );
@@ -30,7 +30,7 @@ function save_options() {
     chrome.storage.sync.set({
         // for background and frontend js to get
         prefixKeyEvent: prefixKeyEvent,
-        availableKeys : availableKeys,
+        leapKeys : leapKeys,
         // for this js to restore
         unbindKeys    : unbindKeys,
         prefixKey     : prefixKey,
@@ -39,7 +39,7 @@ function save_options() {
         if (chrome.runtime.lastError) {
             showMessage("<font color='#FF0000'>保存に失敗しました。</font>");
         } else {
-            backgroundPage.availableKeys = availableKeys;
+            backgroundPage.leapKeys = leapKeys;
             reloadSettings();
 
             showMessage("保存しました。");
@@ -78,15 +78,15 @@ function showMessage(message) {
     }, 3000);
 }
 
-function unbindKeys2availableKeys(unbindKeys, prefixKeyEvent) {
+function unbindKeys2leapKeys(unbindKeys, prefixKeyEvent) {
     if (! settings.prefixKeyEvent.hasModifierKey()) {
         unbindKeys += util.getCharFromKeyEvent(prefixKeyEvent);
     }
-    var availableKeys = "";
+    var leapKeys = "";
     for (var i = 0; i < settings.alphanumeric.length; i++) {
         if (unbindKeys.indexOf(settings.alphanumeric[i]) == -1) {
-            availableKeys += settings.alphanumeric[i];
+            leapKeys += settings.alphanumeric[i];
         }
     }
-    return availableKeys;
+    return leapKeys;
 }
