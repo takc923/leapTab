@@ -9,7 +9,7 @@ function save_options() {
     var prefixKey = document.getElementById("prefix-key").value;
     if (prefixKey.length != 1
         || settings.alphanumeric.indexOf(prefixKey) == -1) {
-        showMessage("<font color='#FF0000'>prefix keyが不正です。英数字を1文字指定して下さい。</font>");
+        showMessage("<font color='#FF0000'>Invalid prefix key. It is a alphameric character.</font>");
         return;
     }
 
@@ -38,12 +38,12 @@ function save_options() {
         prefixModifierKey: prefixModifierKey
     },function() {
         if (chrome.runtime.lastError) {
-            showMessage("<font color='#FF0000'>保存に失敗しました。</font>");
+            showMessage("<font color='#FF0000'>Failed to save...</font>");
         } else {
             backgroundPage.leapKeys = leapKeys;
             reloadSettings();
 
-            showMessage("保存しました。");
+            showMessage("Saved!");
         }
     });
 }
