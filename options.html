@@ -7,19 +7,18 @@
   <script type="text/javascript" src="options.js"></script>
 </head>
 <body>
-prefix key(英数字のみ)：
-修飾キー
+prefix key(alphameric only)：
+modifier key
     <select name="prefix-modifier-key" id="prefix-modifier-key">
-        <option value="">なし</option>
+        <option value="">None</option>
         <option value="shiftKey">Shift</option>
         <option value="ctrlKey">Control</option>
         <option value="metaKey">Command(Windows Key)</option>
         <option value="altKey">Option(Alt)</option>
     </select>
 <input id="prefix-key" type="text" maxlength="1" size="1"><br>
-<!-- prefix keyは大文字をshiftで表してるのに別なのに、こっちはそうじゃないのが気に食わない -->
-バインドしないキー設定：<input id="unbind-keys" type="text" size="50"><br>
+unbind keys<input id="unbind-keys" type="text" size="50"><br>
 
-<button id="save-button">保存</button> <span id="status"></span> <br>
+<button id="save-button">save</button> <span id="status"></span> <br>
 </body>
 </html>
