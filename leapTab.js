@@ -1,6 +1,7 @@
 var lastActiveElement;
 
-window.addEventListener("load", function(){
+document.onreadystatechange = function () {
+    if (document.readyState != "complete") return;
     initialize(function(){
         var dummyElement = document.getElementById(settings.dummyInputElementId);
 
@@ -21,7 +22,7 @@ window.addEventListener("load", function(){
 
         document.addEventListener("keydown", function(evt){
             if (settings.prefixKeyEvent.equal(evt) && ! isBeforeLeap()
-               && (settings.prefixKeyEvent.hasModifierKey() || document.activeElement.tagName == "BODY")) {
+                && (settings.prefixKeyEvent.hasModifierKey() || document.activeElement.tagName == "BODY")) {
                 lastActiveElement = document.activeElement;
                 dummyElement.focus();
             } else if (settings.prefixKeyEvent.equal(evt) && isBeforeLeap()) {
@@ -40,7 +41,7 @@ window.addEventListener("load", function(){
             }
         });
     });
-});
+};
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     onMsgDispatcher[request.action](request.args);
