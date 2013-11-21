@@ -1,3 +1,4 @@
+// todo: change the way to initialize. sometimes no readystatechange event fires.
 var lastActiveElement;
 
 document.onreadystatechange = function () {
