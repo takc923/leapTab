@@ -1,7 +1,6 @@
-// todo: change the way to initialize. sometimes no readystatechange event fires.
 var lastActiveElement;
 
-document.onreadystatechange = function () {
+onload(function () {
     if (document.readyState != "complete") return;
     initialize(function(){
         var dummyElement = document.getElementById(settings.dummyInputElementId);
@@ -42,7 +41,7 @@ document.onreadystatechange = function () {
             }
         });
     });
-};
+});
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     onMsgDispatcher[request.action](request.args);
@@ -122,4 +121,14 @@ function setDummyElement() {
     dummyInput.style.zIndex = "-100";
     dummyInput.id = settings.dummyInputElementId;
     document.body.appendChild(dummyInput);
+}
+
+function onload(callback) {
+    var id = setInterval(function() {
+        if (document.readyState == "complete" // load
+           || document.readyState == "interactive") { // DOMContentLoaded
+            callback();
+            clearInterval(id);
+        }
+    }, 500);
 }
