@@ -1,45 +1,42 @@
 var lastActiveElement;
 
-onload(function () {
-    if (document.readyState != "complete") return;
-    initialize(function(){
-        var dummyElement = document.getElementById(settings.dummyInputElementId);
+initialize(function(){
+    var dummyElement = document.getElementById(settings.dummyInputElementId);
 
-        dummyElement.addEventListener("blur", function(evt){
+    dummyElement.addEventListener("blur", function(evt){
+        chrome.runtime.sendMessage({
+            action : "resetFaviconAll"
+        });
+        // changing active tab trigger blur event, however it does NOT change activeElement.
+        dummyElement.blur();
+        lastActiveElement.focus();
+    });
+
+    dummyElement.addEventListener("focus", function(evt){
+        chrome.runtime.sendMessage({
+            action : "prepareLeap"
+        });
+    });
+
+    document.addEventListener("keydown", function(evt){
+        if (settings.prefixKeyEvent.equal(evt) && ! isBeforeLeap()
+            && (settings.prefixKeyEvent.hasModifierKey() || document.activeElement.tagName == "BODY")) {
+            lastActiveElement = document.activeElement;
+            dummyElement.focus();
+        } else if (settings.prefixKeyEvent.equal(evt) && isBeforeLeap()) {
             chrome.runtime.sendMessage({
-                action : "resetFaviconAll"
+                action : "leapLastTab"
             });
-            // changing active tab trigger blur event, however it does NOT change activeElement.
-            dummyElement.blur();
-            lastActiveElement.focus();
-        });
-
-        dummyElement.addEventListener("focus", function(evt){
+        } else if (isBeforeLeap() && settings.isLeapEvent(evt)){
+            var character = util.getCharFromKeyEvent(evt);
             chrome.runtime.sendMessage({
-                action : "prepareLeap"
+                action : "leap",
+                args: {character: character}
             });
-        });
-
-        document.addEventListener("keydown", function(evt){
-            if (settings.prefixKeyEvent.equal(evt) && ! isBeforeLeap()
-                && (settings.prefixKeyEvent.hasModifierKey() || document.activeElement.tagName == "BODY")) {
-                lastActiveElement = document.activeElement;
-                dummyElement.focus();
-            } else if (settings.prefixKeyEvent.equal(evt) && isBeforeLeap()) {
-                chrome.runtime.sendMessage({
-                    action : "leapLastTab"
-                });
-            } else if (isBeforeLeap() && settings.isLeapEvent(evt)){
-                var character = util.getCharFromKeyEvent(evt);
-                chrome.runtime.sendMessage({
-                    action : "leap",
-                    args: {character: character}
-                });
-                setTimeout(function(){
-                    dummyElement.blur();
-                }, 100);
-            }
-        });
+            setTimeout(function(){
+                dummyElement.blur();
+            }, 100);
+        }
     });
 });
 
@@ -121,14 +118,4 @@ function setDummyElement() {
     dummyInput.style.zIndex = "-100";
     dummyInput.id = settings.dummyInputElementId;
     document.body.appendChild(dummyInput);
-}
-
-function onload(callback) {
-    var id = setInterval(function() {
-        if (document.readyState == "complete" // load
-           || document.readyState == "interactive") { // DOMContentLoaded
-            callback();
-            clearInterval(id);
-        }
-    }, 500);
 }
