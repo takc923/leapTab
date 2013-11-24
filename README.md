@@ -1,3 +1,4 @@
+# [LeapTab](https://chrome.google.com/webstore/detail/leap-tab/phbhikcdpfcmpclcbacfegpmicdgadme)
 ## How To Use
 TODO
 
